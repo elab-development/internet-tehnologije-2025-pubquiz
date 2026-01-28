@@ -1,6 +1,6 @@
 export default function TabelaPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white p-10">
+    <div className="bg-neutral-950 text-white p-10">
       <h1 className="text-3xl font-bold mb-8 text-center text-neutral-300">
         Leaderboard
       </h1>

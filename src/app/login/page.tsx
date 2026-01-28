@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 export default function LoginPage() {
 
@@ -17,15 +19,15 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-black">
       
       {/* kartica u centru */}
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
+      <div className="bg-neutral-800 p-8 rounded-lg w-96">
+        <h1 className="text-2xl font-bold mb-6 text-center text-yellow-500">
           Prijava na Pub Kviz
         </h1>
 
         <form onSubmit={handleLogin} className="space-y-4">
           {/* Polje za Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-yellow-500">Email</label>
             <input 
               type="email" 
               value={email}
@@ -38,7 +40,7 @@ export default function LoginPage() {
 
           {/* Polje za Lozinku */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Lozinka</label>
+            <label className="block text-sm font-medium text-yellow-500">Lozinka</label>
             <input 
               type="password" 
               value={password}
@@ -52,10 +54,20 @@ export default function LoginPage() {
           {/* Dugme za Login */}
           <button 
             type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition duration-200"
+            className="w-full bg-yellow-500 text-black font-bold p-2 rounded-md hover:bg-yellow-200 transition duration-200"
           >
             Prijavi se
           </button>
+          <div className="flex justify-center">
+          <Link 
+              href="../" 
+              className="flex items-center text-neutral-500 text-sm hover:text-gray-900"
+          >
+              <ArrowLeft size={16} className="mr-2" />
+              Back home
+            </Link>
+          </div>
+          
         </form>
       </div>
     </div>
