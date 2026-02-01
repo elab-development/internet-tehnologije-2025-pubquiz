@@ -2,7 +2,7 @@ export default function TabelaPage() {
   return (
     <div className="bg-neutral-950 text-white p-10">
       <h1 className="text-3xl font-bold mb-8 text-center text-neutral-300">
-        Leaderboard
+        Scoreboard
       </h1>
 
       {/* Ovde počinje vizuelna tabela */}

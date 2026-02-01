@@ -41,17 +41,32 @@ async function main() {
       {
         seasonId: winterSeason.id, 
         title: "Kviz #1: Opšte Znanje",
-        dateTime: new Date("2025-01-20T20:00:00"),
+        dateTime: new Date("2026-01-20T20:00:00"),
         location: "Pub Centar",
         description: "Prvi kviz u sezoni.",
       },
       {
         seasonId: winterSeason.id,
         title: "Kviz #2: Muzika",
-        dateTime: new Date("2025-01-27T20:00:00"),
+        dateTime: new Date("2026-01-27T20:00:00"),
         location: "Pub Centar",
         description: "Specijal muzicki kviz.",
+      },
+      {
+        seasonId: winterSeason.id,
+        title: "Love Is In The Air",
+        dateTime: new Date("2026-02-14T20:30:00"),
+        location: "Pub GreenFrog",
+        description: "From heart-melting movie moments and classic rom-com quotes to love anthems and pop-culture romance, this quiz is perfect for hopeless romantics, rom-com lovers, and anyone in the mood for fun vibes and great music.",
+      },
+      {
+        seasonId: winterSeason.id,
+        title: "Quiz & Chill",
+        dateTime: new Date("2026-02-14T19:15:00"),
+        location: "The Quiz Corner",
+        description: "A relaxed but clever pub quiz mixing pop culture, memes, music, and random knowledge for a fun night out",
       }
+
     ]).returning();
 
     console.log("Događaji dodati.");
