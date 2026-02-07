@@ -88,7 +88,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {mode === "register" && (
                         <div>
-                            <label className="block text-sm font-medium text-yellow-900">Ime i prezime</label>
+                            <label className="block text-sm font-medium text-white">Ime i prezime</label>
                             <input
                                 type="text"
                                 required
