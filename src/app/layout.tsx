@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { AuthProvider } from "../../components/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,10 +30,14 @@ export default function RootLayout({
       {/*Neka ovaj element bude visok bar onoliko koliko je visok ekran */}
       <body className="flex flex-col min-h-screen">
         
-          <Navbar />
+          
 
           <main className="flex-grow">  
-            {children}
+            <AuthProvider>
+              <Navbar />
+              {children}
+            </AuthProvider>
+
           </main>
           <Footer />
         

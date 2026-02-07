@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { db } from "./index";
 import { seasons, events, users, teams, results } from "./schema";
+import bcrypt from "bcryptjs";
 
 async function main() {
   
@@ -64,12 +65,16 @@ async function main() {
     });
 
     
-    const [userTim1] = await db.insert(users).values({
-      email: "mkc@gmail.com",
-      passwordHash: "sifra1",
-      role: "TEAM",
-    }).returning();
+   
+const salt = await bcrypt.genSalt(10);
+const hashedPassword = await bcrypt.hash("sifra1", salt);
 
+const [userTim1] = await db.insert(users).values({
+  email: "mkc@gmail.com",
+  passwordHash: hashedPassword, // hashovana sifra
+  role: "TEAM",
+  name: "MKC Tim",
+}).returning();
     
     const [userTim2] = await db.insert(users).values({
       email: "pametni@gmail.com",
@@ -85,6 +90,7 @@ async function main() {
       teamName: "MKC",
       teamLeader: "Mika Mikic",
       members: "Pera, Laza, Zika",
+
     }).returning();
 
     const [team2] = await db.insert(teams).values({
