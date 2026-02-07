@@ -41,7 +41,7 @@ export default function EventCalendar({events}:Props){
 
  
   return (
-    <div className="mx-4 md:mx-8">
+    <div className="mx-4 md:mx-8 ">
 
       {/* div za header*/}
       <div className="text-center">
