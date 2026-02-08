@@ -24,12 +24,12 @@ export default async function TeamProfilePage(props: { params: Promise<{ id: str
 
   if (!team) return notFound();
 
-  // 2. Dohvatanje Email-a (Tražimo korisnika koji je vlasnik ovog tima)
+  
   const user = await db.query.users.findFirst({
     where: eq(users.id, team.userId)
   });
 
-  // 3. Priprema liste članova
+  
   const membersList = team.members 
     ? team.members.split(",").map(m => m.trim()) 
     : [];

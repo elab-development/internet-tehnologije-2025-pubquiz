@@ -4,127 +4,126 @@ import { seasons, events, users, teams, results } from "./schema";
 import bcrypt from "bcryptjs";
 
 async function main() {
-  
-
   try {
-    
+     
     await db.delete(results);
     await db.delete(events);
     await db.delete(teams);
     await db.delete(users);
     await db.delete(seasons);
 
-    
     const insertedSeasons = await db.insert(seasons).values([
       {
-        name: "Zimska Liga 2025",
-        startDate: new Date("2025-01-15"),
-        endDate: new Date("2025-03-31"),
+        name: "Trivia Nights Season 2025", 
+        startDate: new Date("2025-09-06"),
+        endDate: new Date("2025-12-29"),
       },
       {
-        name: "Prolećni Kup",
-        startDate: new Date("2025-04-01"),
-        endDate: new Date("2025-06-15"),
+        name: "Brain Battle Season 2026", 
+        startDate: new Date("2026-01-31"),
+        endDate: new Date("2026-06-06"),
       },
       {
-        name: "Letnja Liga (Open Air)",
-        startDate: new Date("2025-07-01"),
-        endDate: new Date("2025-08-31"),
+        name: "Quiz League 2026", 
+        startDate: new Date("2026-09-05"),
+        endDate: new Date("2026-12-05"),
       },
-    ]).returning(); // vraca ubacene sezone sa njihovim id-jem
-
-    const winterSeason = insertedSeasons[0]; // Uzimamo prvu zimsku ligu za povezivanje
-
-    console.log("Sezone dodate.");
-
-    
-    const insertedEvents = await db.insert(events).values([
-      {
-        seasonId: winterSeason.id, 
-        title: "Kviz #1: Opšte Znanje",
-        dateTime: new Date("2026-01-20T20:00:00"),
-        location: "Pub Centar",
-        description: "Prvi kviz u sezoni.",
-      },
-      {
-        seasonId: winterSeason.id,
-        title: "Kviz #2: Muzika",
-        dateTime: new Date("2026-01-27T20:00:00"),
-        location: "Pub Centar",
-        description: "Specijal muzicki kviz.",
-      }
     ]).returning();
 
-    console.log("Događaji dodati.");
-
+    
     const salt = await bcrypt.genSalt(10);
     const adminHash = await bcrypt.hash("admin123", salt);
-    const tim1Hash = await bcrypt.hash("sifra1", salt);
-    const tim2Hash = await bcrypt.hash("sifra2", salt);
+    const teamHash = await bcrypt.hash("sifra1", salt);
 
     
     await db.insert(users).values({
-      email: "admin@kviz.com",
-      passwordHash: adminHash, 
+      email: "admin@quiz.com",
+      passwordHash: adminHash,
       role: "ADMIN",
     });
 
-    
+    const insertedTeams = [];
 
-const [userTim1] = await db.insert(users).values({
-  email: "mkc@gmail.com",
-  passwordHash: tim1Hash, 
-  role: "TEAM",
-  name: "MKC Tim",
-}).returning();
-    
-    const [userTim2] = await db.insert(users).values({
-      email: "pametni@gmail.com",
-      passwordHash: tim2Hash, 
+    const [userMKC] = await db.insert(users).values({
+      email: "mkc@gmail.com",
+      passwordHash: teamHash,
       role: "TEAM",
+      name: "MKC Tim",
     }).returning();
 
-    console.log("Korisnici dodati.");
-
-    
-    const [team1] = await db.insert(teams).values({
-      userId: userTim1.id,
+    const [teamMKC] = await db.insert(teams).values({
+      userId: userMKC.id,
       teamName: "MKC",
       teamLeader: "Mika Mikic",
       members: "Pera, Laza, Zika",
-
     }).returning();
+    insertedTeams.push(teamMKC);
 
-    const [team2] = await db.insert(teams).values({
-      userId: userTim2.id,
-      teamName: "Pametnjakovici",
-      teamLeader: "Ana Anic",
-      members: "Sanja, Marko",
-    }).returning();
+    const extraTeamNames = [
+      "The Thunder", "Quiz Khalifas", "Les Quizerables",
+      "John Trivialta", "Agatha Quiztie", "Universally Challenged", "Risky Quizness",
+      "Smarty Pints", "Quizzly Bears", "Tequila Mockingbird", "The Know-It-Alls",
+      "Fact Hunt", "Quiz Pro Quo", "Let's Get Quizzical"
+    ];
 
-    console.log("Timovi dodati.");
+    for (let i = 0; i < extraTeamNames.length; i++) {
+      const [user] = await db.insert(users).values({
+        email: `team${i + 2}@quiz.com`,
+        passwordHash: teamHash,
+        role: "TEAM",
+      }).returning();
+
+      const [team] = await db.insert(teams).values({
+        userId: user.id,
+        teamName: extraTeamNames[i],
+        teamLeader: `Captain ${i + 3}`,
+        members: "Member A, Member B",
+      }).returning();
+
+      insertedTeams.push(team);
+    }
+
+    const now = new Date();
 
     
-    await db.insert(results).values([
-      {
-        eventId: insertedEvents[0].id, 
-        teamId: team1.id,           
-        points: 10,
-      },
-      {
-        eventId: insertedEvents[0].id,
-        teamId: team2.id,            
-        points: 8,
+    for (const season of insertedSeasons) {
+      const seasonStart = new Date(season.startDate);
+
+      for (let i = 1; i <= 10; i++) {
+        
+        const quizDate = new Date(seasonStart);
+        quizDate.setDate(quizDate.getDate() + (i * 7));
+        quizDate.setHours(20, 0, 0, 0);
+
+        const [event] = await db.insert(events).values({
+          seasonId: season.id,
+          title: `Quiz #${i}`,
+          dateTime: quizDate,
+          location: i % 2 === 0 ? "Pub Centar" : "GreenFrog Pub",
+          description: `Regular quiz round #${i} of ${season.name}.`,
+        }).returning();
+
+        if (quizDate < now) {
+          const resultsToInsert = insertedTeams.map((team) => {
+            const randomPoints = Math.floor(Math.random() * 41) + 10;
+            return {
+              eventId: event.id,
+              teamId: team.id,
+              points: randomPoints,
+            };
+          });
+
+          await db.insert(results).values(resultsToInsert);
+        }
       }
-    ]);
+    }
 
-    console.log("Rezultati dodati.");
-    
+    console.log("Seed skripta uspešno završena.");;
 
   } catch (error) {
     console.error("Došlo je do greške:", error);
   }
-  
+
   process.exit(0);
 }
 
