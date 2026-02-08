@@ -3,6 +3,8 @@ import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../components/AuthProvider";
+import { ArrowLeft } from 'lucide-react';
+
 
 type Mode = "login" | "register";
 
@@ -88,7 +90,9 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {mode === "register" && (
                         <div>
-                            <label className="block text-sm font-medium text-yellow-900">Ime i prezime</label>
+
+                            <label className="block text-sm font-medium">Ime i prezime</label>
+
                             <input
                                 type="text"
                                 required
@@ -144,6 +148,9 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                         {switchLine[1]}
                     </Link>
                 </p>
+                <div className="flex items-center justify-center">
+                    <Link href="/" className="text-sm flex items-center gap-1 py-2 text-neutral-500 hover:font-bold"><ArrowLeft size={14} /> Back home</Link>
+                </div>
             </div>
         </div>
     );

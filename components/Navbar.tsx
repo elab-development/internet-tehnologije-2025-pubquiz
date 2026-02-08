@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Menu, X, User } from "lucide-react";
 import { useAuth } from "../components/AuthProvider"; 
 
+
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [isProfilOpen, setIsProfilOpen] = useState(false);
@@ -29,9 +30,9 @@ export default function Navbar() {
 
     return (
         <nav className="bg-neutral-950 text-white border-b relative">
-            <div className="px-4 py-2 flex justify-between items-center max-w-7xl mx-auto">
+            <div className="px-4 py-2 flex justify-between items-center max-w mx-auto">
                 {/* Logo */}
-                <Link href="/" className="font-bold text-xl">Home</Link>
+                <Link href="/" className="font-bold text-xl hover:text-2xl text-yellow-500 -rotate-3">PubQuiz</Link>
 
                 {/* Mobile menu toggle */}
                 <button className="md:hidden border rounded p-1" onClick={() => setIsOpen(!isOpen)}>
@@ -40,8 +41,8 @@ export default function Navbar() {
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center gap-6">
-                    <Link href="/calendar" className={pathname == '/calendar' ? 'text-yellow-500' : 'hover:text-yellow-400'}>Calendar</Link>
-                    <Link href="/table" className={pathname == '/table' ? 'text-yellow-500' : 'hover:text-yellow-400'}>Leaderboard</Link>
+                    <Link href="/calendar" className="hover:font-bold">Calendar</Link>
+                    
 
                     {isLoggedIn ? (
                         <div className="relative">
@@ -49,7 +50,7 @@ export default function Navbar() {
                                 onClick={() => setIsProfilOpen(!isProfilOpen)} 
                                 className="flex items-center gap-2 bg-neutral-900 border border-neutral-800 px-3 py-1 rounded-full hover:bg-neutral-800 transition"
                             >
-                                <span className="text-sm text-yellow-500">{user?.name}</span>
+                                <span className="text-sm text-yellow-500">{user?.email}</span>
                                 <User size={20} />
                             </button>
 
@@ -62,11 +63,11 @@ export default function Navbar() {
                                     <div className="absolute right-0 mt-2 w-48 bg-neutral-900 border border-neutral-800 rounded shadow-xl z-50 overflow-hidden">
                                         <div className="px-4 py-2 border-b border-neutral-800 text-xs text-neutral-400 uppercase">Korisnik</div>
                                         <Link 
-                                            href="/profile" 
+                                            href={user?.id ? `/team/${user.id}` : '#'}
                                             onClick={() => setIsProfilOpen(false)}
                                             className="px-4 py-3 hover:bg-neutral-800 text-sm block"
                                         >
-                                            My Profile
+                                            My Profile ({user.email})
                                         </Link>
                                         <button 
                                             onClick={handleLogout}
@@ -93,11 +94,11 @@ export default function Navbar() {
             {isOpen && (
                 <div className="md:hidden flex flex-col gap-3 border-t pl-4 py-4 bg-neutral-900 text-sm animate-in fade-in slide-in-from-top-2">
                     <Link href="/calendar" onClick={() => setIsOpen(false)}>Calendar</Link>
-                    <Link href="/table" onClick={() => setIsOpen(false)}>Leaderboard</Link>
+                    
                     
                     {isLoggedIn ? (
                         <>
-                            <Link href="/profile" onClick={() => setIsOpen(false)}>My Profile ({user?.name})</Link>
+                            <Link href={user?.id ? `/team/${user.id}` : '#'} onClick={() => setIsOpen(false)}>My Profile ({user.email})</Link>
                             <button onClick={handleLogout} className="text-left text-red-500 font-bold">Log out</button>
                         </>
                     ) : (

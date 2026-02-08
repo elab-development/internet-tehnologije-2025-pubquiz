@@ -1,9 +1,18 @@
-export default function CalendarPage(){
-    return(
-        <div className="bg-neutral-950 text-white p-10">
-            <h1 className="text-3xl font-bold mb-8 text-center text-neutral-300">
-            Calendar
-            </h1>
-        </div>
+import { db } from "@/db";
+import { events } from "@/db/schema";
+import EventCalendar from "@/../components/EventCalendar";
+
+
+export default async function CalendarPage() {
+    
+    const allEvents = await db.select().from(events);
+
+    
+    return (            
+        
+        <EventCalendar events={allEvents} />
+      
     );
+  
+    
 }
