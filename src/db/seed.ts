@@ -48,7 +48,6 @@ async function main() {
       email: "mkc@gmail.com",
       passwordHash: teamHash,
       role: "TEAM",
-      name: "MKC Tim",
     }).returning();
 
     const [teamMKC] = await db.insert(teams).values({

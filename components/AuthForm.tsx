@@ -13,7 +13,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
 
     const router = useRouter();
     const { refresh } = useAuth();
-    const [name, setName] = useState("");
+    const [teamName, setTeamName] = useState("");
     const [email, setEmail] = useState("");
     const [pwd, setPwd] = useState("");
 
@@ -41,7 +41,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
 
 
             //kreiramo body za request, pogledati src/app/auth/login/route.ts
-            const body = mode === "login" ? { email, password: pwd } : { name, email, password: pwd }
+            const body = mode === "login" ? { email, password: pwd } : { teamName, email, password: pwd }
             //saljemo zahtev i odgovor upisujemo u res
             const res = await fetch(endpoint, {
                 method: "POST",
@@ -91,14 +91,14 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                     {mode === "register" && (
                         <div>
 
-                            <label className="block text-sm font-medium">Ime i prezime</label>
+                            <label className="block text-sm font-medium text-white">Ime tima</label>
 
                             <input
                                 type="text"
                                 required
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                className="mt-2 block w-full rounded-md border border-yellow-300 bg-neutral-950 px-3 py-1.5 text-base placeholder:text-yellow-400 focus:border-yellow-600 focus:outline-none sm:text-sm"
+                                value={teamName}
+                                onChange={(e) => setTeamName(e.target.value)}
+                                className="mt-2 block w-full rounded-md border border-yellow-300 bg-neutral-950 px-3 py-1.5 text-white placeholder:text-yellow-400 focus:border-yellow-600 focus:outline-none sm:text-sm"
                             />
                         </div>
                     )}

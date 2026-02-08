@@ -7,7 +7,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default function Modal({ isOpen, onClose, title, children }: Props) {
+export default function PopUpEvent({ isOpen, onClose, title, children }: Props) {
   if (!isOpen) return null;
 
   return (
