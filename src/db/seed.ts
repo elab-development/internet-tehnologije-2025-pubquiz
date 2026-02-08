@@ -56,6 +56,7 @@ async function main() {
       teamName: "MKC",
       teamLeader: "Mika Mikic",
       members: "Pera, Laza, Zika",
+
     }).returning();
     insertedTeams.push(teamMKC);
 

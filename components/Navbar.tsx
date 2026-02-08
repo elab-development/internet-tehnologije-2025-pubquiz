@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Menu, X, User } from "lucide-react";
 import { useAuth } from "../components/AuthProvider"; 
-import { teams } from "@/db/schema";
+
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
