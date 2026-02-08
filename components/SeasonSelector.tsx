@@ -23,7 +23,7 @@ export default function SeasonSelector({ seasons, currentSeasonId }: { seasons: 
       <select
         value={currentSeasonId}
         onChange={handleChange}
-        className="bg-neutral-800 text-yellow-500 text-sm font-medium border border-neutral-700 rounded px-2 py-1"
+        className="bg-neutral-800 text-yellow-500 hover:text-yellow-400 text-sm font-medium border border-neutral-700 rounded px-2 py-1"
       >
         {seasons.map((s) => (
           <option key={s.id} value={s.id}>

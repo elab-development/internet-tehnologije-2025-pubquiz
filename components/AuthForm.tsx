@@ -3,6 +3,7 @@ import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../components/AuthProvider";
+import { ArrowLeft } from 'lucide-react';
 
 type Mode = "login" | "register";
 
@@ -144,6 +145,9 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                         {switchLine[1]}
                     </Link>
                 </p>
+                <div className="flex items-center justify-center">
+                    <Link href="/" className="text-sm flex items-center gap-1 py-2 text-neutral-500 hover:font-bold"><ArrowLeft size={14} /> Back home</Link>
+                </div>
             </div>
         </div>
     );

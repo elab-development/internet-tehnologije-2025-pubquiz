@@ -2,6 +2,7 @@
 
 import * as dateFns from 'date-fns';
 import { useState } from 'react';
+import PopUpEvent from "./PopUpEvent";
 
 
 
@@ -39,6 +40,7 @@ export default function EventCalendar({events}:Props){
   const nextMonth = () => setCurrentDate(dateFns.addMonths(currentDate, 1));
   const prevMonth = () => setCurrentDate(dateFns.subMonths(currentDate, 1));
 
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
  
   return (
     <div className="mx-4 md:mx-8">
@@ -51,12 +53,8 @@ export default function EventCalendar({events}:Props){
         
         {/* div za mesece napred nazad*/}
         <div className='flex items-center justify-center gap-3 mb-2'>
-          <button onClick={prevMonth} className="hover:text-yellow-500">
-            Previous
-          </button>
-          <button onClick={nextMonth} className="hover:text-yellow-500">
-            Next
-          </button>
+          <button onClick={prevMonth} className="hover:text-yellow-500">Previous</button>
+          <button onClick={nextMonth} className="hover:text-yellow-500">Next</button>
         </div>
       </div>
 
@@ -77,10 +75,7 @@ export default function EventCalendar({events}:Props){
           });
 
           return (
-            <div
-              key={day.toString()}
-              className="min-h-24 border border-neutral-700 rounded"
-            >
+            <div key={day.toString()} className="min-h-24 border border-neutral-700 rounded">
               
               {/* div za dan u mesecu*/}
               <div className="font-bold text-sm text-right p-1"> 
@@ -90,7 +85,7 @@ export default function EventCalendar({events}:Props){
               {/* kvizovi tog dana */}
               <div className="flex flex-col">
                 {dayEvents.map((ev) => (
-                    <div key={ev.id} className="border border-yellow-500 text-xs p-1 m-1 rounded">
+                    <div key={ev.id} onClick={() => setSelectedEvent(ev)} className="border border-yellow-500 text-xs p-1 m-1 rounded">
                    
                     <span className="font-bold">
                         {dateFns.format(ev.dateTime, "HH:mm")}
@@ -103,6 +98,44 @@ export default function EventCalendar({events}:Props){
           );
         })}
       </div>
+      < PopUpEvent 
+        isOpen={!!selectedEvent} 
+        onClose={() => setSelectedEvent(null)} 
+        title="Info"
+      >
+        {selectedEvent && (
+          <div className="space-y-2">
+            <div>
+              <label className="text-neutral-500 text-sm block">Quiz Title</label>
+              <p className="text-lg font-semibold">{selectedEvent.title}</p>
+            </div>
+            
+            
+              <div>
+                <label className="text-neutral-500 text-sm block">Time</label>
+                <p>{dateFns.format(selectedEvent.dateTime, "HH:mm")}h</p>
+              </div>
+              <div>
+                <label className="text-neutral-500 text-sm block">Date</label>
+                <p>{dateFns.format(selectedEvent.dateTime, "dd.MM.yyyy.")}</p>
+              </div>
+            
+
+            <div>
+              <label className="text-neutral-500 text-sm block">Location</label>
+              <p className="text-neutral-300">{selectedEvent.location}</p>
+            </div>
+
+            {selectedEvent.description && (
+              <div>
+                <label className="text-neutral-500 text-sm block">Description</label>
+                <p className="text-neutral-300">{selectedEvent.description}</p>
+              </div>
+            )}
+          </div>
+        )}
+      </PopUpEvent>
+
     </div>
   );
   

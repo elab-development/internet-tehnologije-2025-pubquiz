@@ -88,7 +88,7 @@ export default async function HomePage(props: {  searchParams?: Promise<{ season
           </div>
 
           <div className="bg-neutral-950 px-3 py-1 rounded-full text-xs text-neutral-400 border border-neutral-800">
-            {sortedScoreboard.length} TIMOVA
+            {sortedScoreboard.length} TEAMS
           </div>
         </div>
 

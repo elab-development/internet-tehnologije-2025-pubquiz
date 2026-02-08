@@ -42,14 +42,14 @@ async function main() {
       {
         seasonId: winterSeason.id, 
         title: "Kviz #1: Opšte Znanje",
-        dateTime: new Date("2025-01-20T20:00:00"),
+        dateTime: new Date("2026-01-20T20:00:00"),
         location: "Pub Centar",
         description: "Prvi kviz u sezoni.",
       },
       {
         seasonId: winterSeason.id,
         title: "Kviz #2: Muzika",
-        dateTime: new Date("2025-01-27T20:00:00"),
+        dateTime: new Date("2026-01-27T20:00:00"),
         location: "Pub Centar",
         description: "Specijal muzicki kviz.",
       }
