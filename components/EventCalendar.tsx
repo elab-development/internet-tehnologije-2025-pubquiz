@@ -41,16 +41,16 @@ export default function EventCalendar({events}:Props){
 
  
   return (
-    <div className="mx-4 md:mx-8 ">
+    <div className="mx-4 md:mx-8">
 
       {/* div za header*/}
-      <div className="text-center">
+      <div className="text-center mt-10">
         <h1 className="text-xl font-bold mb-2">
             {dateFns.format(currentDate, "MMMM y")}
         </h1>
         
         {/* div za mesece napred nazad*/}
-        <div className='flex items-center justify-center gap-3'>
+        <div className='flex items-center justify-center gap-3 mb-2'>
           <button onClick={prevMonth} className="hover:text-yellow-500">
             Previous
           </button>
@@ -68,7 +68,7 @@ export default function EventCalendar({events}:Props){
       </div>
 
       {/* div za dane u mesecu*/}
-      <div className="grid grid-cols-7">
+      <div className="grid grid-cols-7 bg-neutral-900/30">
         {days.map((day) => {
           
           
@@ -79,7 +79,7 @@ export default function EventCalendar({events}:Props){
           return (
             <div
               key={day.toString()}
-              className="min-h-24 border"
+              className="min-h-24 border border-neutral-700 rounded"
             >
               
               {/* div za dan u mesecu*/}
@@ -93,7 +93,7 @@ export default function EventCalendar({events}:Props){
                     <div key={ev.id} className="border border-yellow-500 text-xs p-1 m-1 rounded">
                    
                     <span className="font-bold">
-                        {dateFns.format(new Date(ev.dateTime), "HH:mm")}
+                        {dateFns.format(ev.dateTime, "HH:mm")}
                     </span> 
                     <span> - {ev.title}</span>
                     </div>

@@ -1,113 +1,128 @@
 import "dotenv/config";
 import { db } from "./index";
 import { seasons, events, users, teams, results } from "./schema";
+import bcrypt from "bcryptjs";
 
 async function main() {
-  try { 
+  
+
+  try {
     
     await db.delete(results);
     await db.delete(events);
     await db.delete(teams);
     await db.delete(users);
     await db.delete(seasons);
+
     
     const insertedSeasons = await db.insert(seasons).values([
       {
-        name: "Spring/Summer 2025",
+        name: "Zimska Liga 2025",
+        startDate: new Date("2025-01-15"),
+        endDate: new Date("2025-03-31"),
+      },
+      {
+        name: "Prolećni Kup",
         startDate: new Date("2025-04-01"),
+        endDate: new Date("2025-06-15"),
+      },
+      {
+        name: "Letnja Liga (Open Air)",
+        startDate: new Date("2025-07-01"),
         endDate: new Date("2025-08-31"),
       },
+    ]).returning(); // vraca ubacene sezone sa njihovim id-jem
+
+    const winterSeason = insertedSeasons[0]; // Uzimamo prvu zimsku ligu za povezivanje
+
+    console.log("Sezone dodate.");
+
+    
+    const insertedEvents = await db.insert(events).values([
       {
-        name: "Autumn/Winter 25/26",
-        startDate: new Date("2025-09-01"),
-        endDate: new Date("2026-03-31"),
+        seasonId: winterSeason.id, 
+        title: "Kviz #1: Opšte Znanje",
+        dateTime: new Date("2025-01-20T20:00:00"),
+        location: "Pub Centar",
+        description: "Prvi kviz u sezoni.",
       },
       {
-        name: "Spring/Summer 2026",
-        startDate: new Date("2026-04-01"),
-        endDate: new Date("2026-08-31"),
-      },
+        seasonId: winterSeason.id,
+        title: "Kviz #2: Muzika",
+        dateTime: new Date("2025-01-27T20:00:00"),
+        location: "Pub Centar",
+        description: "Specijal muzicki kviz.",
+      }
     ]).returning();
 
+    console.log("Događaji dodati.");
+
+    
     await db.insert(users).values({
-      email: "admin@quiz.com",
-      passwordHash: "admin123",
+      email: "admin@kviz.com",
+      passwordHash: "admin123", // Ovde ide hash 
       role: "ADMIN",
     });
 
     
-    const teamNames = [
-      "The Thunder", "The Brainiacs", "Quiz Khalifas", "Les Quizerables", 
-      "John Trivialta", "Agatha Quiztie", "Universally Challenged", "Risky Quizness",
-      "Smarty Pints", "Quizzly Bears", "Tequila Mockingbird", "The Know-It-Alls",
-      "Fact Hunt", "Quiz Pro Quo", "Let's Get Quizzical"
-    ];
+   
+const salt = await bcrypt.genSalt(10);
+const hashedPassword = await bcrypt.hash("sifra1", salt);
 
-    const insertedTeams = [];
+const [userTim1] = await db.insert(users).values({
+  email: "mkc@gmail.com",
+  passwordHash: hashedPassword, // hashovana sifra
+  role: "TEAM",
+  name: "MKC Tim",
+}).returning();
+    
+    const [userTim2] = await db.insert(users).values({
+      email: "pametni@gmail.com",
+      passwordHash: "sifra2",
+      role: "TEAM",
+    }).returning();
+
+    console.log("Korisnici dodati.");
 
     
-    for (let i = 0; i < teamNames.length; i++) {
-      const [user] = await db.insert(users).values({
-        email: `team${i + 1}@quiz.com`,
-        passwordHash: `pass${i + 1}`,
-        role: "TEAM",
-      }).returning();
+    const [team1] = await db.insert(teams).values({
+      userId: userTim1.id,
+      teamName: "MKC",
+      teamLeader: "Mika Mikic",
+      members: "Pera, Laza, Zika",
 
-      const [team] = await db.insert(teams).values({
-        userId: user.id,
-        teamName: teamNames[i],
-        teamLeader: `Captain ${i + 1}`,
-        members: "Member 1, Member 2, Member 3",
-      }).returning();
+    }).returning();
 
-      insertedTeams.push(team);
-    }
-    
-    const now = new Date(); 
+    const [team2] = await db.insert(teams).values({
+      userId: userTim2.id,
+      teamName: "Pametnjakovici",
+      teamLeader: "Ana Anic",
+      members: "Sanja, Marko",
+    }).returning();
+
+    console.log("Timovi dodati.");
 
     
-    for (const season of insertedSeasons) {
-      const seasonStart = new Date(season.startDate);
-
-      for (let i = 1; i <= 10; i++) {
-        
-        const quizDate = new Date(seasonStart);
-        quizDate.setDate(quizDate.getDate() + (i * 7)); 
-        quizDate.setHours(20, 0, 0, 0);
-
-        
-        const [event] = await db.insert(events).values({
-          seasonId: season.id,
-          title: `Quiz #${i}`,
-          dateTime: quizDate,
-          location: i % 2 === 0 ? "The Pub Center" : "GreenFrog Pub",
-          description: `Regular quiz round #${i} of the season.`,
-        }).returning();
-
-        
-        if (quizDate < now) {
-            
-            const resultsToInsert = insertedTeams.map((team) => {
-              
-              const randomPoints = Math.floor(Math.random() * 41) + 10;
-              return {
-                eventId: event.id,
-                teamId: team.id,
-                points: randomPoints,
-              };
-            });
-
-            await db.insert(results).values(resultsToInsert);
-        }
+    await db.insert(results).values([
+      {
+        eventId: insertedEvents[0].id, 
+        teamId: team1.id,           
+        points: 10,
+      },
+      {
+        eventId: insertedEvents[0].id,
+        teamId: team2.id,            
+        points: 8,
       }
-    }
+    ]);
 
-    console.log("Seed skripta zavrsena uspesno.");
+    console.log("Rezultati dodati.");
+    
 
   } catch (error) {
-    console.error("Doslo je do greske:", error);
+    console.error("Došlo je do greške:", error);
   }
-
+  
   process.exit(0);
 }
 
