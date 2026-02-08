@@ -57,28 +57,30 @@ async function main() {
 
     console.log("Događaji dodati.");
 
+    const salt = await bcrypt.genSalt(10);
+    const adminHash = await bcrypt.hash("admin123", salt);
+    const tim1Hash = await bcrypt.hash("sifra1", salt);
+    const tim2Hash = await bcrypt.hash("sifra2", salt);
+
     
     await db.insert(users).values({
       email: "admin@kviz.com",
-      passwordHash: "admin123", // Ovde ide hash 
+      passwordHash: adminHash, 
       role: "ADMIN",
     });
 
     
-   
-const salt = await bcrypt.genSalt(10);
-const hashedPassword = await bcrypt.hash("sifra1", salt);
 
 const [userTim1] = await db.insert(users).values({
   email: "mkc@gmail.com",
-  passwordHash: hashedPassword, // hashovana sifra
+  passwordHash: tim1Hash, 
   role: "TEAM",
   name: "MKC Tim",
 }).returning();
     
     const [userTim2] = await db.insert(users).values({
       email: "pametni@gmail.com",
-      passwordHash: "sifra2",
+      passwordHash: tim2Hash, 
       role: "TEAM",
     }).returning();
 
