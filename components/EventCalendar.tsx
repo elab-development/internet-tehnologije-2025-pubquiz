@@ -126,12 +126,12 @@ export default function EventCalendar({events}:Props){
               <p className="text-neutral-300">{selectedEvent.location}</p>
             </div>
 
-            {selectedEvent.description && (
+            
               <div>
                 <label className="text-neutral-500 text-sm block">Description</label>
                 <p className="text-neutral-300">{selectedEvent.description}</p>
               </div>
-            )}
+            
           </div>
         )}
       </PopUpEvent>

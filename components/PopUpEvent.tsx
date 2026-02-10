@@ -7,7 +7,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default function Modal({ isOpen, onClose, title, children }: Props) {
+export default function PopUpEvent({ isOpen, onClose, title, children }: Props) {
   if (!isOpen) return null;
 
   return (
@@ -18,19 +18,15 @@ export default function Modal({ isOpen, onClose, title, children }: Props) {
         onClick={onClose} 
       />
       
-      
       <div className="relative bg-neutral-950 border border-neutral-700 w-full max-w-sm rounded-xl overflow-hidden">
         
         <div className="flex items-center justify-center p-4 border-b border-neutral-800">
           <h3 className="text-xl font-bold text-yellow-500">{title}</h3>
-        
         </div>
-
         
         <div className="p-6 text-white">
           {children}
         </div>
-        
       </div>
     </div>
   );

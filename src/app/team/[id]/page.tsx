@@ -8,19 +8,12 @@ export default async function TeamProfilePage(props: { params: Promise<{ id: str
   const params = await props.params;
   const idParam = params.id;
 
-  // 1. Logika za pretragu tima (da li je ID broj ili UUID)
-  const isIdNumber = /^\d+$/.test(idParam);
   let team;
 
-  if (isIdNumber) {
-    team = await db.query.teams.findFirst({
-      where: eq(teams.id, parseInt(idParam)),
-    });
-  } else {
-    team = await db.query.teams.findFirst({
+  team = await db.query.teams.findFirst({
       where: eq(teams.userId, idParam),
-    });
-  }
+  });
+
 
   if (!team) return notFound();
 
@@ -31,7 +24,7 @@ export default async function TeamProfilePage(props: { params: Promise<{ id: str
 
   
   const membersList = team.members 
-    ? team.members.split(",").map(m => m.trim()) 
+    ? team.members.split(",")
     : [];
 
   return (

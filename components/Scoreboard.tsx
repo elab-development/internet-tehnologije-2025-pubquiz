@@ -6,8 +6,11 @@ type TeamProps = {
   team: string;
   points: number;
 };
+type Props ={
+ data: TeamProps[];
+};
 
-export default function ScoreboardTable({ data }: { data: TeamProps[] }) {
+export default function ScoreboardTable({ data }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const visibleData = isExpanded ? data : data.slice(0, 5);
@@ -30,7 +33,7 @@ export default function ScoreboardTable({ data }: { data: TeamProps[] }) {
             let scoreColor = "text-neutral-300";
             let rankColor = "text-neutral-500";
 
-            if (index == 0) {
+            if (index === 0) {
               rowBg = "bg-yellow-500/10";
               scoreColor = "text-yellow-500";
               rankColor = "text-yellow-500";
