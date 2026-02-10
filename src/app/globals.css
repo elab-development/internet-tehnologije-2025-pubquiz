@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Hex kod za neutral-950 */
+  --background: #0a0a0a;
+  
+  /* Hex kod za neutral-50 (svetla boja za tekst) */
+  --foreground: #fafafa;
 }
 
 @theme inline {
@@ -12,12 +15,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Uklonio sam @media block da bi pozadina uvek bila ista (tamna) */
 
 body {
   background: var(--background);

@@ -69,7 +69,7 @@ export default async function HomePage(props: {  searchParams?: Promise<{ season
   }
 
   return (
-    <main className="text-white p-6 md:p-12">
+    <main className="text-white p-6 md:p-12 ">
       
       <div className="max-w-4xl mx-auto mb-12 text-center">
         <h1 className="text-4xl md:text-6xl font-extrabold text-yellow-500">
