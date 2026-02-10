@@ -7,7 +7,12 @@ type Season = {
   name: string;
 };
 
-export default function SeasonSelector({ seasons, currentSeasonId }: { seasons: Season[], currentSeasonId: number }) {
+type Props = {
+  seasons: Season[];
+  currentSeasonId: number;
+};
+
+export default function SeasonSelector({ seasons, currentSeasonId }: Props) {
 
   const router = useRouter();
 
