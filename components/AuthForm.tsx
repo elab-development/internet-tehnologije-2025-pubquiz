@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../components/AuthProvider";
 import { ArrowLeft } from 'lucide-react';
 
+
 type Mode = "login" | "register";
 
 
@@ -89,7 +90,9 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {mode === "register" && (
                         <div>
+
                             <label className="block text-sm font-medium">Ime i prezime</label>
+
                             <input
                                 type="text"
                                 required
