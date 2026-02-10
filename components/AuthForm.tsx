@@ -20,15 +20,15 @@ export default function AuthForm({ mode }: { mode: Mode }) {
 
     const [err, setErr] = useState("");
     const [loading, setLoading] = useState(false);
-    const title = mode === "login" ? "Prijavi se na svoj nalog" : "Napravi novi nalog";
-    const btnLabel = mode === "login" ? "Prijavi se" : "Napravi nalog";
+    const title = mode === "login" ? "Login into your account" : "Create an account";
+    const btnLabel = mode === "login" ? "Login" : "Create account";
     const switchLine =
         mode === "login"
-            ? (["Niste registrovani?", "Registruj se", "/register"] as const)
-            : (["Već imate nalog?", "Prijavi se", "/login"] as const);
+            ? (["Not registered?", "Register", "/register"] as const)
+            : (["Already have an account?", "Login", "/login"] as const);
 
 
- //SUBMIT
+ 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setErr("");
@@ -36,22 +36,22 @@ export default function AuthForm({ mode }: { mode: Mode }) {
 
 
         try {
-            //postavljamo endpoint kako bismo znali koju rutu na back-u da gadjamo
+            
             const endpoint = mode === "login" ? "/api/auth/login" : "/api/auth/register"
 
 
-            //kreiramo body za request, pogledati src/app/auth/login/route.ts
+            
             const body = mode === "login" ? { email, password: pwd } : { teamName, email, password: pwd }
-            //saljemo zahtev i odgovor upisujemo u res
+            
             const res = await fetch(endpoint, {
                 method: "POST",
-                credentials: "include", // dozvoljava Set-Cookie na back-u
+                credentials: "include", 
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body) //pretvara body u JSON string
+                body: JSON.stringify(body) 
             })
 
 
-            //u slucaju greske, ako je error kod 400-599
+            
             if (!res.ok) {
                 let message = "Greska pri autentifikaciji";
                 let data;
@@ -64,13 +64,13 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                 setErr(message);
                 return;
             }
-            // Set-Cookie je već stigao iz API-ja, odradjeno na serveru
-            // teramo ga da ponovo pokrene sve serverske komponente, ucita cookie i azurira stanje
+            
+            
             await refresh();
             router.push("/");
             router.refresh();
         } finally {
-            setLoading(false); //cak I ako pukne kod, moramo da ugasimo loader
+            setLoading(false);
         }
     }
 
@@ -79,7 +79,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-neutral-950">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 
-                <h1 className="mt-4 text-center text-xl font-bold text-yellow-600">Pub Quiz</h1>
+                <h1 className="mt-4 text-center text-6xl font-bold text-yellow-600">Pub Quiz</h1>
                 <h2 className="mt-6 text-center text-2xl font-bold tracking-tight text-white">
                     {title}
                 </h2>
@@ -91,7 +91,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                     {mode === "register" && (
                         <div>
 
-                            <label className="block text-sm font-medium text-white">Ime tima</label>
+                            <label className="block text-sm font-medium text-white">Team name</label>
 
                             <input
                                 type="text"
@@ -105,7 +105,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
 
 
                     <div>
-                        <label className="block text-sm font-medium text-white">Email adresa</label>
+                        <label className="block text-sm font-medium text-white">Email adress</label>
                         <input
                             type="email"
                             required
@@ -117,7 +117,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
 
 
                     <div>
-                        <label className="block text-sm font-medium text-white">Lozinka</label>
+                        <label className="block text-sm font-medium text-white">Password</label>
                         <input
                             type="password"
                             required
