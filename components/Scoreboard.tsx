@@ -61,7 +61,7 @@ export default function ScoreboardTable({ data }: Props) {
         <div className="p-4 border-t border-neutral-800 text-center">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-sm font-medium text-yellow-500 hover:text-yellow-300 tracking-wider"
+            className="text-sm font-medium text-yellow-500 hover:text-yellow-300"
           >
             {isExpanded ? "Show Less" : "Show All"}
           </button>
