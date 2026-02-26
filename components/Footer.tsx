@@ -1,25 +1,39 @@
-import { Instagram, Facebook } from 'lucide-react';
+import { Instagram, Facebook, Mail } from 'lucide-react';
 
-export default function Footer(){
-    return(
-        <footer className="bg-neutral-950 text-grey-200 border-t">
-            <div className="py-2 flex flex-col justify-center items-center text-center gap-2">
-                {/*Drustvene mreze */}
-                <div className="flex flex-row gap-5 ">
-                    <a href="https://instagram.com" target="_blank">
-                        <Instagram size={24}/>
-                    </a>
+export default function Footer() {
 
-                    <a href="https://facebook.com" target="_blank">
-                        <Facebook size={24}/>
-                    </a>
-                </div>
+  return (
+    <footer className="bg-neutral-950 text-neutral-400 border-t border-neutral-900">
+      <div className="max-w-7xl mx-auto px-6 pt-4 pb-6 flex flex-col items-center gap-3">
+        
+        <div className="flex items-center gap-6">
+          <a 
+            href="https://instagram.com" 
+            target="_blank" 
+            className="hover:text-yellow-500 transition-colors duration-300"
+          >
+            <Instagram size={20} />
+          </a>
 
-                <div>
-                    <a href="mailto:pubquiz@gmail.com" className="md:pr-4">pubquiz@gmail.com</a>
-                </div>
-            </div>
+          <a 
+            href="https://facebook.com" 
+            target="_blank" 
+            className="hover:text-yellow-500 transition-colors duration-300"
+          >
+            <Facebook size={20} />
+          </a>
+        </div>
 
-        </footer>
-    );
+        <div className="flex flex-col items-center gap-2">
+          <a 
+            href="mailto:pubquiz@gmail.com" 
+            className="flex items-center gap-2 hover:text-white transition-colors text-sm font-medium"
+          >
+            <Mail size={16} />
+            pubquiz@gmail.com
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
 }

@@ -1,42 +1,33 @@
 import { NextResponse } from "next/server";
-import { getCurrentUser, isUserAdmin } from "../../../lib/auth-utils";
-import { db } from "@/db";
+import { db } from "@/db"; 
 import { seasons } from "@/db/schema";
-
+import { isAdmin } from "@/lib/auth";
+import { desc } from "drizzle-orm";
 
 export async function GET() {
-  const allSeasons = await db.query.seasons.findMany();
-  return NextResponse.json(allSeasons, { status: 200 });
+  try {
+    const data = await db.query.seasons.findMany({
+      orderBy: [desc(seasons.startDate)]
+    });
+    return NextResponse.json(data || []);
+  } catch (error) {
+    return NextResponse.json([], { status: 500 });
+  }
 }
 
-
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const user = await getCurrentUser(request);
-
-    if (!isUserAdmin(user)) {
-      return NextResponse.json(
-        { error: "Zabranjen pristup: Samo Admin može kreirati sezonu" },
-        { status: 403 }
-      );
-    }
-
-    const body = await request.json();
-
+    if (!(await isAdmin())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     
-    const newSeason = await db.insert(seasons).values({
-      name: body.name, 
-      startDate: new Date(body.startDate), 
+    const body = await req.json();
+    const result = await db.insert(seasons).values({
+      name: body.name,
+      startDate: new Date(body.startDate),
       endDate: new Date(body.endDate),
     }).returning();
     
-    return NextResponse.json(newSeason, { status: 201 });
-
+    return NextResponse.json(result[0]);
   } catch (error) {
-    console.error("GRESKA U POST /api/seasons:", error);
-    return NextResponse.json(
-      { error: "Došlo je do greške na serveru", details: String(error) }, 
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed" }, { status: 500 });
   }
 }

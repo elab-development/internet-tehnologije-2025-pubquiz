@@ -1,4 +1,5 @@
 import * as jwt from "jsonwebtoken"
+import { cookies } from "next/headers";
 
 export const AUTH_COOKIE = "auth"; 
 const JWT_SECRET = process.env.JWT_SECRET!; 
@@ -10,10 +11,11 @@ if (!JWT_SECRET) {
 
 
 export type JwtUserClaims = {
+    id: string;
     sub: string; 
     email: string;
     name?: string;
-    role?: "ADMIN" | "TEAM" | "GUEST"; 
+    role?: "ADMIN" | "TEAM"; 
 }
 
 export function signAuthToken(claims: JwtUserClaims) {
@@ -28,6 +30,7 @@ export function verifyAuthToken(token: string): JwtUserClaims {
     if (!payload || !payload.sub || !payload.email) throw new Error("Invalid token");
     
     return {
+        id: payload.sub,
         sub: payload.sub,
         email: payload.email,
         name: payload.name,
@@ -44,4 +47,23 @@ export function cookieOpts() {
         path: "/", 
         maxAge: 60 * 60 * 24 * 7 
     }
+}
+
+export async function getAuthUser() {
+  try {
+    const cookieStore = await cookies(); 
+    const token = cookieStore.get(AUTH_COOKIE)?.value;
+
+    if (!token) return null;
+
+    const claims = verifyAuthToken(token);
+    return claims; 
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function isAdmin() {
+    const user = await getAuthUser();
+    return user?.role?.toUpperCase() === "ADMIN";
 }

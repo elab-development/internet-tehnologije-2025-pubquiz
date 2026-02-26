@@ -31,7 +31,7 @@ export async function POST(req: Request) {
 
   if (!u) {
     return NextResponse.json(
-      { error: "Pogesan email ili lozinka" },
+      { error: "User not found" },
       { status: 401 }
     );
   }
@@ -39,21 +39,27 @@ export async function POST(req: Request) {
   const ok = await bcrypt.compare(password, u.passwordHash);
   if (!ok) {
     return NextResponse.json(
-      { error: "Pogesan email ili lozinka" },
+      { error: "Incorrect password" },
       { status: 401 }
     );
   }
 
   const token = signAuthToken({
     sub: u.id,
+    id: u.id,
     email: u.email,
+    role: u.role
   });
 
   
   const res = NextResponse.json({
-    id: u.id,
-    email: u.email,
+    user: {
+        id: u.id,
+        email: u.email,
+        role: u.role,
+      }
   });
+  
   res.cookies.set(AUTH_COOKIE, token, cookieOpts());
 
   return res;

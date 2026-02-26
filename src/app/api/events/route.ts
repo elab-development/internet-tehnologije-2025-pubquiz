@@ -1,52 +1,52 @@
 import { NextResponse } from "next/server";
-import { getCurrentUser, isUserAdmin } from "@/lib/auth-utils";
+import { isAdmin } from "@/lib/auth"; 
 import { db } from "@/db";
-import { events, seasons } from "@/db/schema"; 
-import { eq } from "drizzle-orm";
+import { events } from "@/db/schema"; 
+import { desc } from "drizzle-orm";
 
 
 export async function GET() {
-  const calendar = await db.query.events.findMany({
-    orderBy: (events, { asc }) => [asc(events.dateTime)],
-    with: { season: true }
-  });
-  return NextResponse.json(calendar, { status: 200 });
+  try {
+    const allEvents = await db.query.events.findMany({
+      orderBy: [desc(events.dateTime)],
+    });
+    return NextResponse.json(allEvents, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: "Greška pri ucitavanju kvizova" }, { status: 500 });
+  }
 }
-
-
 export async function POST(request: Request) {
   try {
-    const user = await getCurrentUser(request);
-
-    if (!isUserAdmin(user)) {
-      return NextResponse.json({ error: "Zabranjeno" }, { status: 403 });
+    if (!(await isAdmin())) {
+      return NextResponse.json({ error: "Zabranjen pristup" }, { status: 403 });
     }
 
     const body = await request.json();
 
-    const activeSeason = await db.query.seasons.findFirst({
-      where: eq(seasons.id, body.seasonId)
-    });
-
-    if (!activeSeason) {
-      return NextResponse.json({ error: "Ne možete kreirati događaj bez validne sezone" }, { status: 400 });
+    if (!body.title || !body.dateTime || !body.seasonId) {
+      return NextResponse.json({ error: "Nedostaju obavezni podaci (naslov, datum ili sezona)" }, { status: 400 });
     }
 
-    const newEvent = await db.insert(events).values({
-      seasonId: body.seasonId,
-      title: body.title,
-      dateTime: new Date(body.date),
-      location: body.location,
-       description: body.description
+    const eventDate = new Date(body.dateTime);
+    if (isNaN(eventDate.getTime())) {
+      return NextResponse.json({ error: "Neispravan format datuma" }, { status: 400 });
+    }
 
+
+    const [newEvent] = await db.insert(events).values({
+      title: body.title,
+      dateTime: eventDate,
+      seasonId: body.seasonId, 
+      location: body.location || "Default Venue",
+      description: body.description || ""
     }).returning();
 
     return NextResponse.json(newEvent, { status: 201 });
 
   } catch (error) {
-    console.error("GRESKA U POST /api/events:", error);
+    console.error("EVENT_POST_ERROR:", error);
     return NextResponse.json(
-      { error: "Greška na serveru", details: String(error) }, 
+      { error: "Doslo je do greske na serveru pri kreiranju dogadjaja" }, 
       { status: 500 }
     );
   }
