@@ -22,7 +22,7 @@ export const events = pgTable("events", {
 
 
 //uloge
-export const userRoleEnum = pgEnum("user_role", ["ADMIN", "TEAM"]);
+export const userRoleEnum = pgEnum("user_role", ["ADMIN", "TEAM", "GUEST"]);
 
 
 export const users = pgTable("users", {
