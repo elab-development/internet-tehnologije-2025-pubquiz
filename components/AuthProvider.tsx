@@ -13,9 +13,10 @@ import React, {
 
 export type User = {
   id: string;
-  name: string;
+  name?: string;
   email: string;
-  createdAt: string;
+  role: "ADMIN" | "TEAM";
+  createdAt?: string;
 };
 
 type AuthState =

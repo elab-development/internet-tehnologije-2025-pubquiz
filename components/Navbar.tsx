@@ -12,16 +12,18 @@ export default function Navbar() {
     const [isProfilOpen, setIsProfilOpen] = useState(false);
     const pathname = usePathname();
 
-    // 2. Izvuci podatke iz AuthProvider-a
     const { status, user, logout } = useAuth();
     const isLoggedIn = status === "authenticated";
 
+
+    const profileHref = user?.role === "ADMIN" ? "/admin" : `/team/${user?.id}`;
+    const isAdmin = status === "authenticated" && user?.role === "ADMIN";
+   
     const disableNavbarRoutes = ['/login', '/register'];
     if (disableNavbarRoutes.includes(pathname)) {
         return null;
     }
 
-    // Funkcija za odjavu koja zatvara i menije
     const handleLogout = async () => {
         await logout();
         setIsProfilOpen(false);
@@ -31,18 +33,25 @@ export default function Navbar() {
     return (
         <nav className="bg-neutral-950 text-white border-b relative">
             <div className="px-4 py-2 flex justify-between items-center max-w mx-auto">
+                <div className="hidden md:flex items-center gap-6">
                 {/* Logo */}
                 <Link href="/" className="font-bold text-xl hover:text-2xl text-yellow-500 -rotate-3">PubQuiz</Link>
 
+                
+                </div>
                 {/* Mobile menu toggle */}
-                <button className="md:hidden border rounded p-1" onClick={() => setIsOpen(!isOpen)}>
+                <button className="md:hidden p-1" onClick={() => setIsOpen(!isOpen)}>
                     {isOpen ? <X size={28} /> : <Menu size={28} />}
                 </button>
 
                 {/* Desktop Menu */}
-                <div className="hidden md:flex items-center gap-6">
+                <div className="hidden md:flex items-center gap-3">
                     <Link href="/calendar" className="hover:font-bold">Calendar</Link>
                     
+                {isAdmin && (
+                    <span className="border border-yellow-500 hover:border-2 uppercase px-2 rounded font-bold tracking-wider">
+                        <Link href="/admin" className="font-bold text-sm text-yellow-500">Admin Panel</Link>
+                </span>)}
 
                     {isLoggedIn ? (
                         <div className="relative">
@@ -56,18 +65,17 @@ export default function Navbar() {
 
                             {/* Dropdown Menu */}
                             {isProfilOpen && (
-                                <>
-                                    {/* Transparentna podloga koja zatvara meni na klik bilo gde */}
+                                <>                                    
                                     <div className="fixed inset-0 z-40" onClick={() => setIsProfilOpen(false)}></div>
                                     
                                     <div className="absolute right-0 mt-2 w-48 bg-neutral-900 border border-neutral-800 rounded shadow-xl z-50 overflow-hidden">
-                                        <div className="px-4 py-2 border-b border-neutral-800 text-xs text-neutral-400 uppercase">Korisnik</div>
+                                        <div className="px-4 py-2 border-b border-neutral-800 text-xs text-neutral-400 uppercase">User</div>
                                         <Link 
-                                            href={user?.id ? `/team/${user.id}` : '#'}
+                                            href={profileHref}
                                             onClick={() => setIsProfilOpen(false)}
                                             className="px-4 py-3 hover:bg-neutral-800 text-sm block"
                                         >
-                                            My Profile ({user.email})
+                                            {user?.role === "ADMIN" ? "Admin Panel" : "My Profile"}
                                         </Link>
                                         <button 
                                             onClick={handleLogout}
@@ -98,7 +106,7 @@ export default function Navbar() {
                     
                     {isLoggedIn ? (
                         <>
-                            <Link href={user?.id ? `/team/${user.id}` : '#'} onClick={() => setIsOpen(false)}>My Profile ({user.email})</Link>
+                            <Link href={profileHref} onClick={() => setIsOpen(false)}>{user?.role === "ADMIN" ? "Admin Panel" : "My Profile"}</Link>
                             <button onClick={handleLogout} className="text-left text-red-500 font-bold">Log out</button>
                         </>
                     ) : (

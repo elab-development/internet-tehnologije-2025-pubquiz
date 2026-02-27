@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp, integer, uuid, pgEnum, unique } from "drizzle-orm/pg-core";
+import { boolean, pgTable, serial, text, timestamp, integer, uuid, pgEnum, unique } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 // Tabela SEZONA 
@@ -22,24 +22,34 @@ export const events = pgTable("events", {
 
 
 //uloge
-export const userRoleEnum = pgEnum("user_role", ["ADMIN", "TEAM", "GUEST"]);
+export const userRoleEnum = pgEnum("user_role", ["ADMIN", "TEAM"]);
 
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
-  name: text("name"),
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
-  role: userRoleEnum("role").default("TEAM"),
-  createdAt: timestamp("created_at").defaultNow(),
+  role: userRoleEnum("role").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const admins = pgTable("admins", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull()
+    .unique(),
+  fullName: text("full_name")
+});
 
 export const teams = pgTable("teams", {
-  id: serial("id").primaryKey(),
-  userId: uuid("user_id").references(() => users.id).notNull(), 
-  teamLeader: text("team_leader").notNull(),
-  teamName: text("team_name").notNull().unique(), 
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull()
+    .unique(),
+  teamName: text("team_name").notNull().unique(),
+  captainName: text("captain_name"), 
   members: text("members"), 
   createdAt: timestamp("created_at").defaultNow(),
 });
@@ -48,8 +58,8 @@ export const teams = pgTable("teams", {
 
 export const results = pgTable("results", {
   id: serial("id").primaryKey(),
-  eventId: integer("event_id").references(() => events.id).notNull(),
-  teamId: integer("team_id").references(() => teams.id).notNull(),
+  eventId: integer("event_id").references(() => events.id,{ onDelete: "cascade"} ).notNull(),
+  teamId: uuid("team_id").references(() => teams.id, { onDelete: "cascade"}).notNull(),
   points: integer("points").notNull(),
 }, (t) => ({
   // Ograničenje: Jedan tim može imati samo jedan rezultat po kvizu 
@@ -58,9 +68,20 @@ export const results = pgTable("results", {
 
 
 export const usersRelations = relations(users, ({ one }) => ({
+  adminProfile: one(admins, {
+    fields: [users.id],
+    references: [admins.userId],
+  }),
   teamProfile: one(teams, {
     fields: [users.id],
     references: [teams.userId],
+  }),
+}));
+
+export const adminsRelations = relations(admins, ({ one }) => ({
+  user: one(users, {
+    fields: [admins.userId],
+    references: [users.id],
   }),
 }));
 
