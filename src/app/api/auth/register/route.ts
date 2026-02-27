@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     );
   }
 
- 
+
   const passHash = await bcrypt.hash(password, 10);
 
   const result = await db.transaction(async (tx) => {
@@ -51,24 +51,25 @@ export async function POST(req: Request) {
 
     // 5b. Kreiranje TEAM profila
     const [t] = await tx.insert(teams).values({
-      userId: u.id,          
-      teamName,              
-      teamLeader: "Unknown", // može se naknadno update-ovati
+      userId: u.id,
+      teamName,
+      captainName: "Unknown", // može se naknadno update-ovati
       members: "",           // može se naknadno update-ovati
     }).returning({
       id: teams.id,
       teamName: teams.teamName,
     });
 
-    
+
     return { user: u, team: t };
   });
 
- 
+
   const token = signAuthToken({
     sub: result.user.id,
+    id: result.user.id,
     email: result.user.email,
-    role: result.user.role as "ADMIN" | "TEAM" | "GUEST",
+    role: result.user.role as unknown as "ADMIN" | "TEAM"
   });
 
 
