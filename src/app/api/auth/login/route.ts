@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     sub: u.id,
     id: u.id,
     email: u.email,
-    role: u.role
+    role: u.role as any
   });
 
   
