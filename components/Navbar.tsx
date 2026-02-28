@@ -33,7 +33,7 @@ export default function Navbar() {
     return (
         <nav className="bg-neutral-950 text-white border-b relative">
             <div className="px-4 py-2 flex justify-between items-center max-w mx-auto">
-                <div className="hidden md:flex items-center gap-6">
+                <div className="md:flex items-center gap-6">
                 {/* Logo */}
                 <Link href="/" className="font-bold text-xl hover:text-2xl text-yellow-500 -rotate-3">PubQuiz</Link>
 
@@ -43,7 +43,7 @@ export default function Navbar() {
                 <button className="md:hidden p-1" onClick={() => setIsOpen(!isOpen)}>
                     {isOpen ? <X size={28} /> : <Menu size={28} />}
                 </button>
-
+                
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center gap-3">
                     <Link href="/calendar" className="hover:font-bold">Calendar</Link>
@@ -100,13 +100,13 @@ export default function Navbar() {
 
             {/* Mobile Menu (Hamburger) */}
             {isOpen && (
-                <div className="md:hidden flex flex-col gap-3 border-t pl-4 py-4 bg-neutral-900 text-sm animate-in fade-in slide-in-from-top-2">
+                <div className="md:hidden flex flex-col gap-3 border-t pl-4 py-4 bg-neutral-950/30 text-sm animate-in fade-in slide-in-from-top-2">
                     <Link href="/calendar" onClick={() => setIsOpen(false)}>Calendar</Link>
                     
                     
                     {isLoggedIn ? (
                         <>
-                            <Link href={profileHref} onClick={() => setIsOpen(false)}>{user?.role === "ADMIN" ? "Admin Panel" : "My Profile"}</Link>
+                            <Link href={profileHref} onClick={() => setIsOpen(false)} className="text-yellow-500">{user?.role === "ADMIN" ? "Admin Panel" : "My Profile"}</Link>
                             <button onClick={handleLogout} className="text-left text-red-500 font-bold">Log out</button>
                         </>
                     ) : (

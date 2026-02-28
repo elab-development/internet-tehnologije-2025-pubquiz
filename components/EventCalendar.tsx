@@ -3,6 +3,7 @@
 import * as dateFns from 'date-fns';
 import { useState } from 'react';
 import PopUpEvent from "./PopUpEvent";
+import { ChevronLeft, ChevronRight} from 'lucide-react';
 
 
 
@@ -47,14 +48,20 @@ export default function EventCalendar({events}:Props){
 
       {/* div za header*/}
       <div className="text-center mt-10">
-        <h1 className="text-xl font-bold mb-2">
-            {dateFns.format(currentDate, "MMMM y")}
+        <h1 className="text-2xl font-bold mb-2 italic tracking-widest">
+            <span className='text-yellow-500'>{dateFns.format(currentDate, "MMMM") + " "}</span>{dateFns.format(currentDate, "y")}
         </h1>
         
         {/* div za mesece napred nazad*/}
         <div className='flex items-center justify-center gap-3 mb-2'>
-          <button onClick={prevMonth} className="hover:text-yellow-500">Previous</button>
-          <button onClick={nextMonth} className="hover:text-yellow-500">Next</button>
+          <button onClick={prevMonth} className="hover:text-yellow-500"><ChevronLeft size={20} /></button>
+          <button 
+            onClick={() => setCurrentDate(new Date())} 
+            className="py-1 text-xs font-bold uppercase tracking-widest text-neutral-500 hover:text-white"
+          >
+            Today
+          </button>
+          <button onClick={nextMonth} className="hover:text-yellow-500"><ChevronRight size={20} /></button>
         </div>
       </div>
 
@@ -66,7 +73,7 @@ export default function EventCalendar({events}:Props){
       </div>
 
       {/* div za dane u mesecu*/}
-      <div className="grid grid-cols-7 bg-neutral-900/30">
+      <div className="grid grid-cols-7 bg-neutral-950/30">
         {days.map((day) => {
           
           
