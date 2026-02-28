@@ -38,8 +38,6 @@ export default function AuthForm({ mode }: { mode: Mode }) {
         try {
             
             const endpoint = mode === "login" ? "/api/auth/login" : "/api/auth/register"
-
-
             
             const body = mode === "login" ? { email, password: pwd } : { teamName, email, password: pwd }
             
@@ -49,7 +47,6 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body) 
             })
-
 
             
             if (!res.ok) {
