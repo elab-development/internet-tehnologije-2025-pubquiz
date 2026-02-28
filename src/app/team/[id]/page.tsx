@@ -24,7 +24,7 @@ export default function MyProfilePage() {
 
   const fetchProfile = async () => {
     try {
-      const res = await fetch("/api/teams");
+      const res = await fetch("/api/teams/profile");
       if (res.ok) {
         const data = await res.json();
         setProfile(data);
@@ -43,7 +43,7 @@ export default function MyProfilePage() {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch("/api/teams", {
+      const res = await fetch("/api/teams/profile", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
