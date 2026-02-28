@@ -25,3 +25,25 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Greska na serveru" }, { status: 500 });
   }
 }
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const { eventId, teamId, points } = body;
+
+    if (!eventId || !teamId || points === undefined) {
+      return NextResponse.json({ error: "Sva polja su obavezna" }, { status: 400 });
+    }
+
+    const newResult = await db.insert(results).values({
+      eventId: parseInt(eventId),
+      teamId: teamId,
+      points: parseInt(points),
+    }).returning();
+
+    return NextResponse.json(newResult[0], { status: 201 });
+  } catch (error) {
+    console.error("Greška prilikom čuvanja rezultata:", error);
+    return NextResponse.json({ error: "Greska na serveru" }, { status: 500 });
+  }
+}

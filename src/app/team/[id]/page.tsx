@@ -1,17 +1,23 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { Star, Edit2 } from "lucide-react";
 import PopUpEvent from "@/../components/PopUpEvent";
 import ShowAllButton from "@/../components/ShowAllButton";
+import BtnSaveAndCancel from "@/../components/BtnSaveAndCancel";
 import TeamChart from "@/../components/TeamChart"
 
 export default function MyProfilePage() {
   const [profile, setProfile] = useState<any>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
-  const [saving, setSaving] = useState(false);
+  const [saving, setSaving] = useState(false); 
 
-  const [formData, setFormData] = useState({ teamName: "", captainName: "", members: "" });
+  const [formData, setFormData] = useState({
+    teamName: "",
+    captainName: "",
+    members: ""
+  });
 
   useEffect(() => {
     fetchProfile();
@@ -19,7 +25,7 @@ export default function MyProfilePage() {
 
   const fetchProfile = async () => {
     try {
-      const res = await fetch("/api/teams/profile");
+      const res = await fetch("/api/teams");
       if (res.ok) {
         const data = await res.json();
         setProfile(data);
@@ -32,14 +38,13 @@ export default function MyProfilePage() {
     } catch (err) {
       console.error("Fetch error: ", err);
     }
-
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch("/api/teams/profile", {
+      const res = await fetch("/api/teams", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -64,8 +69,9 @@ export default function MyProfilePage() {
 
   return (
     <div className="bg-neutral-950 text-neutral-200 p-4 md:p-8">
-      <div className="max-w-4xl mx-auto space-y-6">
-
+      
+      <div className="max-w-xl mx-auto space-y-6">
+        
         <section className="bg-neutral-950/30 border border-neutral-800 rounded-2xl p-6 relative overflow-hidden">
           <div className="absolute top-0 left-0 h-full w-1.5 bg-yellow-500" />
 
@@ -77,7 +83,7 @@ export default function MyProfilePage() {
             </div>
             <button
               onClick={() => setIsEditModalOpen(true)}
-              className="text-blue-400 hover:text-blue-200"
+              className="text-blue-400 hover:text-blue-200 transition-colors"
             >
               <Edit2 size={18} />
             </button>
@@ -102,28 +108,19 @@ export default function MyProfilePage() {
           </div>
         </section>
 
-        <div className="space-y-3">
-          <div className="space-y-3">
-            <div className="flex justify-between items-center px-2">
-              <h2 className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest flex items-center gap-2">
-                <Star size={12} className="text-yellow-500" /> Statistics
-              </h2>
-            </div>
-
-            {allResults.length > 0 && <TeamChart data={chartData} />}
-
-            <div className="flex justify-between items-center px-2 mt-6">
-              <h2 className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest flex items-center gap-2">
-                <Star size={12} className="text-yellow-500" /> History
-              </h2>
-              {allResults.length > 5 && (
-                <ShowAllButton
-                  showAll={showAll}
-                  totalCount={allResults.length}
-                  onClick={() => setShowAll(!showAll)}
-                />
-              )}
-            </div>
+        <div className="space-y-3 ">
+          <div className="flex justify-between items-center px-2">
+            <h2 className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest flex items-center gap-2">
+              <Star size={12} className="text-yellow-500" /> History
+            </h2>
+            
+            {allResults.length > 5 && (
+              <ShowAllButton
+                onClick={() => setShowAll(!showAll)}
+                showAll={showAll}
+                totalCount={allResults.length}
+              />
+            )}
           </div>
           
 
@@ -134,10 +131,10 @@ export default function MyProfilePage() {
                   <tr key={res.id} className="hover:bg-neutral-500/20 transition-colors group">
                     <td className="p-4">
                       <p className="font-bold text-white text-sm group-hover:text-yellow-500 transition-colors">
-                        {res.event.title}
+                        {res.event?.title}
                       </p>
                       <p className="text-[10px] text-neutral-500 uppercase mt-0.5">
-                        {new Date(res.event.dateTime).toLocaleDateString("sr-RS")}
+                        {res.event?.dateTime ? new Date(res.event.dateTime).toLocaleDateString("sr-RS") : ""}
                       </p>
                     </td>
                     <td className="p-4 text-right">
@@ -194,11 +191,10 @@ export default function MyProfilePage() {
               onChange={(e) => setFormData({ ...formData, members: e.target.value })}
             />
           </div>
-
-          <div className="flex gap-3 mt-6">
-            <button type="button" onClick={() => setIsEditModalOpen(false)} className="flex-1 bg-neutral-800 text-white font-bold py-3 rounded uppercase text-xs hover:bg-neutral-700">Cancel</button>
-            <button type="submit" className="flex-1 bg-yellow-500 text-black font-bold py-3 rounded uppercase text-xs hover:bg-yellow-400">Save</button>
-          </div>
+          
+          <BtnSaveAndCancel 
+            onCancel={() => setIsEditModalOpen(false)} 
+          />
         </form>
       </PopUpEvent>
     </div>
