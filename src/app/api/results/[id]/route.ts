@@ -43,8 +43,11 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     if (!existingResult) {
       return NextResponse.json({ error: "Rezultat nije pronadjen" }, { status: 404 });
     }
-
-    if (new Date(existingResult.event.dateTime) < new Date()) {
+    // rezultati se se mogu menjati do 7 dana posle kviza
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    
+    if (new Date(existingResult.event.dateTime) < sevenDaysAgo) {
       return NextResponse.json(
         { error: "Rezultati zavrsenih kvizova su zakljucani i ne mogu se menjati." }, 
         { status: 400 }
@@ -88,8 +91,11 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
     if (!existingResult) {
       return NextResponse.json({ error: "Rezultat ne postoji" }, { status: 404 });
     }
-
-    if (new Date(existingResult.event.dateTime) < new Date()) {
+    
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    
+    if (new Date(existingResult.event.dateTime) < sevenDaysAgo) {
       return NextResponse.json(
         { error: "Nije moguce brisati rezultate zavrsenih kvizova." }, 
         { status: 400 }
