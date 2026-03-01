@@ -2,9 +2,10 @@
 
 interface BtnSaveAndCancelProps {
   onCancel: () => void; 
+  saveLabel?: string;
 }
 
-export default function BtnSaveAndCancel({ onCancel }: BtnSaveAndCancelProps) {
+export default function BtnSaveAndCancel({ onCancel, saveLabel = "Save" }: BtnSaveAndCancelProps) {
   return (
     <div className="flex gap-3 mt-6">
       <button 
