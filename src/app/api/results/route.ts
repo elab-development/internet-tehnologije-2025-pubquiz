@@ -1,3 +1,44 @@
+/**
+ * @swagger
+ * /api/results:
+ *  get:
+ *    description: Vraca listu svih rezultata sa povezanim timovima i dogadjajima
+ *    responses:
+ *      200:
+ *        description: Uspesno povuceni rezultati
+ *      500:
+ *        description: Serverska greska
+ *  post:
+ *    description: Unos novog rezultata za tim na odredjenom dogadjaju
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - eventId
+ *              - teamId
+ *              - points
+ *            properties:
+ *              eventId:
+ *                type: integer
+ *                description: ID kviza
+ *              teamId:
+ *                type: string
+ *                description: UUID tima
+ *              points:
+ *                type: integer
+ *                description: Broj osvojenih poena
+ *    responses:
+ *      201:
+ *        description: Rezultat uspesno sacuvan
+ *      400:
+ *        description: Nedostaju obavezna polja
+ *      500:
+ *        description: Serverska greska
+ */
+
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { results, seasons } from "@/db/schema";

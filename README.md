@@ -32,4 +32,6 @@ Popunjavanje baze test podacima:
 npx tsx src/db/seed.ts
 
 Pokretanje razvojnog servera:
-npm run dev
+npm run 
+
+API dokumentacija je dostupna na ruti /api-docs nakon što pokrenete aplikaciju.

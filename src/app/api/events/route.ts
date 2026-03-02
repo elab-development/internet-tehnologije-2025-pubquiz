@@ -4,7 +4,48 @@ import { db } from "@/db";
 import { events } from "@/db/schema"; 
 import { desc } from "drizzle-orm";
 
-
+/**
+ * @swagger
+ * /api/events:
+ *  get:
+ *    description: Lista dogadjaja
+ *    responses:
+ *      200:
+ *        description: OK
+ *  post:
+ *    description: Kreiranje novog dogadjaja (Zahteva Admin rolu)
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - title
+ *              - dateTime
+ *              - seasonId
+ *            properties:
+ *              title:
+ *                type: string
+ *              dateTime:
+ *                type: string
+ *                format: date-time
+ *              seasonId:
+ *                type: string
+ *              location:
+ *                type: string
+ *              description:
+ *                type: string
+ *    responses:
+ *      201:
+ *        description: Dogadjaj uspesno kreiran
+ *      400:
+ *        description: Nevalidni podaci
+ *      403:
+ *        description: Zabranjen pristup (Niste admin)
+ *      500:
+ *        description: Server error
+ */
 export async function GET() {
   try {
     const allEvents = await db.query.events.findMany({

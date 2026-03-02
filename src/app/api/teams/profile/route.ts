@@ -1,3 +1,46 @@
+/**
+ * @swagger
+ * /api/teams/profile:
+ *  get:
+ *    description: Vraca profil tima za trenutno ulogovanog korisnika (sa rezultatima i dogadjajima)
+ *    responses:
+ *      200:
+ *        description: Uspesno povucen profil tima
+ *      401:
+ *        description: Niste prijavljeni ili niste u roli TEAM
+ *      404:
+ *        description: Profil tima nije pronadjen
+ *      500:
+ *        description: Serverska greska
+ *  patch:
+ *    description: Azurira podatke o timu trenutno ulogovanog korisnika
+ *    requestBody:
+ *     required: true
+ *     content:
+ *      application/json:
+ *       schema:
+ *        type: object
+ *        properties:
+ *          teamName:
+ *            type: string
+ *          captainName:
+ *            type: string
+ *          members:
+ *            type: array
+ *            items:
+ *              type: string
+ *    responses:
+ *      200:
+ *        description: Podaci uspesno azurirani
+ *      401:
+ *        description: Neautorizovan pristup
+ *      409:
+ *        description: Ime tima je vec zauzeto
+ *      500:
+ *        description: Serverska greska
+ */
+
+
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { teams } from "@/db/schema";

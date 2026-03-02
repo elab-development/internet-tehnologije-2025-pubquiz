@@ -1,3 +1,65 @@
+/**
+ * @swagger
+ * /api/results/{id}:
+ *  get:
+ *    description: Detalji specificnog rezultata sa podacima o timu i kvizu
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: integer
+ *    responses:
+ *      200:
+ *        description: Uspesno pronadjen rezultat
+ *      404:
+ *        description: Rezultat nije pronadjen
+ *  patch:
+ *    description: Izmena rezultata (samo admin, dozvoljeno do 7 dana nakon kviza)
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: integer
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              points:
+ *                type: integer
+ *              eventId:
+ *                type: integer
+ *              teamId:
+ *                type: string
+ *    responses:
+ *      200:
+ *        description: Rezultat azuriran
+ *      400:
+ *        description: Rezultati su zakljucani (proslo vise od 7 dana)
+ *      403:
+ *        description: Niste admin
+ *      409:
+ *        description: Tim vec ima rezultat na tom kvizu
+ *  delete:
+ *    description: Brisanje rezultata (samo admin, dozvoljeno do 7 dana nakon kviza)
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: integer
+ *    responses:
+ *      200:
+ *        description: Rezultat obrisan
+ *      400:
+ *        description: Nije moguce brisati zakljucane rezultate
+ *      403:
+ *        description: Zabranjen pristup
+ */
 import { NextResponse } from "next/server";
 import { isAdmin } from "@/lib/auth";
 import { db } from "@/db";

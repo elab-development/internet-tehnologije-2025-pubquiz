@@ -1,3 +1,55 @@
+/**
+ * @swagger
+ * /api/seasons/{id}:
+ *  patch:
+ *    description: Azuriranje postojece sezone (Samo Admin)
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: integer
+ *    requestBody:
+ *      required: true
+ *      content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                name:
+ *                  type: string
+ *                startDate:
+ *                  type: string
+ *                  format: date
+ *                endDate:
+ *                  type: string
+ *                  format: date
+ *    responses:
+ *      200:
+ *        description: Sezona uspesno azurirana
+ *      401:
+ *        description: Neautorizovan pristup
+ *      400:
+ *        description: Neispravan ID
+ *      500:
+ *        description: Greska na serveru
+ *  delete:
+ *    description: Brisanje sezone (Samo Admin)
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: integer
+ *    responses:
+ *      200:
+ *        description: Sezona uspesno obrisana
+ *      401:
+ *        description: Neautorizovan pristup
+ *      500:
+ *        description: Greska prilikom brisanja
+ */
+
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { seasons } from "@/db/schema";

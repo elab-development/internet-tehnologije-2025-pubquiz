@@ -77,6 +77,7 @@ export default async function HomePage(props: {  searchParams?: Promise<{ season
         </h1>
       </div>
 
+<<<<<<< Updated upstream
       <div className="max-w-2xl mx-auto bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden">
         
         <div className="p-6 flex justify-between items-center bg-neutral-800/50">
@@ -89,6 +90,36 @@ export default async function HomePage(props: {  searchParams?: Promise<{ season
 
           <div className="bg-neutral-950 px-3 py-1 rounded-full text-xs text-neutral-400 border border-neutral-800">
             {sortedScoreboard.length} TEAMS
+=======
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-neutral-900/20 border border-neutral-800 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
+          
+          <div className=" p-4 flex flex-col flex-start gap-6 border-b border-neutral-800 bg-neutral-900/40 md:flex-row md:justify-between md:items-center">
+     
+            <div className="w-full sm:w-auto flex justify-start md:justify-start">
+              <SeasonSelector 
+                seasons={allSeasons} 
+                currentSeasonId={displaySeason.id} 
+              />
+            </div>
+
+            <div className="flex items-center justify-start py-2">
+              <p className="text-xs text-neutral-500 font-bold uppercase tracking-widest mb-1">Teams: {sortedScoreboard.length}</p>
+            </div>
+
+           </div>
+
+          <div className="overflow-x-auto scrollbar-hide">
+            {sortedScoreboard.length === 0 ? (
+              <div className="p-12 text-center text-neutral-500 italic text-sm">
+                No results for the season <span className="text-yellow-500 font-bold">{displaySeason.name}</span>.
+              </div>
+            ) : (
+              <div className="min-w-[300px]">
+                <Scoreboard data={sortedScoreboard} />
+              </div>
+            )}
+>>>>>>> Stashed changes
           </div>
         </div>
 

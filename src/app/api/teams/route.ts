@@ -1,3 +1,14 @@
+/**
+ * @swagger
+ * /api/teams:
+ *  get:
+ *    description: Vraca listu svih timova
+ *    responses:
+ *      200:
+ *        description: Uspesno
+ *      401:
+ *        description: Niste ulogovani
+ */
 import { NextResponse } from "next/server";
 import { getAuthUser, isAdmin } from "@/lib/auth"; 
 import { db } from "@/db";

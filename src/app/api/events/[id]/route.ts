@@ -1,3 +1,75 @@
+/**
+ * @swagger
+ * /api/events/{id}:
+ *  get:
+ *    description: Vraca detalje o konkretnom kvizu sa podacima o sezoni
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: integer
+ *    responses:
+ *      200:
+ *        description: Podaci o kvizu su uspesno pronadjeni
+ *      404:
+ *        description: Kviz nije pronadjen
+ *      500:
+ *        description: Greska na serveru
+ *  patch:
+ *    description: Izmena postojeceg kviza (Samo Admin, samo ako kviz nije zavrsen)
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: integer
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              title:
+ *                type: string
+ *              seasonId:
+ *                type: integer
+ *              dateTime:
+ *                type: string
+ *                format: date-time
+ *              location:
+ *                type: string
+ *              description:
+ *                 type: string
+ *    responses:
+ *      200:
+ *        description: Kviz uspesno azuriran
+ *      400:
+ *        description: Nije moguce menjati zavrsene kvizove
+ *      403:
+ *        description: Zabranjen pristup (Niste admin)
+ *      404:
+ *        description: Kviz ne postoji
+ *  delete:
+ *    description: Brisanje kviza (Samo Admin, samo ako kviz nije zavrsen)
+ *    parameters:
+ *    - in: path
+ *      name: id
+ *      required: true
+ *      schema:
+ *        type: integer
+ *    responses:
+ *      200:
+ *        description: Kviz uspesno obrisan
+ *      400:
+ *        description: Nije moguce brisati zavrsene kvizove
+ *      403:
+ *        description: Zabranjen pristup
+ *      404:
+ *        description: Kviz ne postoji
+ */
+
 import { NextResponse } from "next/server";
 import { isAdmin } from "@/lib/auth"; 
 import { db } from "@/db";
