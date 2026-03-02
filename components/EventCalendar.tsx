@@ -3,6 +3,7 @@
 import * as dateFns from 'date-fns';
 import { useState } from 'react';
 import PopUpEvent from "./PopUpEvent";
+import { createGoogleCalendarLink } from "@/lib/utils";
 
 
 
@@ -104,21 +105,22 @@ export default function EventCalendar({events}:Props){
         title="Info"
       >
         {selectedEvent && (
+          
           <div className="space-y-2">
             <div>
               <label className="text-neutral-500 text-sm block">Quiz Title</label>
               <p className="text-lg font-semibold">{selectedEvent.title}</p>
             </div>
+          
             
-            
-              <div>
-                <label className="text-neutral-500 text-sm block">Time</label>
-                <p>{dateFns.format(selectedEvent.dateTime, "HH:mm")}h</p>
-              </div>
-              <div>
-                <label className="text-neutral-500 text-sm block">Date</label>
-                <p>{dateFns.format(selectedEvent.dateTime, "dd.MM.yyyy.")}</p>
-              </div>
+            <div>
+              <label className="text-neutral-500 text-sm block">Time</label>
+              <p>{dateFns.format(selectedEvent.dateTime, "HH:mm")}h</p>
+            </div>
+            <div>
+              <label className="text-neutral-500 text-sm block">Date</label>
+              <p>{dateFns.format(selectedEvent.dateTime, "dd.MM.yyyy.")}</p>
+            </div>
             
 
             <div>
@@ -127,10 +129,29 @@ export default function EventCalendar({events}:Props){
             </div>
 
             
-              <div>
-                <label className="text-neutral-500 text-sm block">Description</label>
-                <p className="text-neutral-300">{selectedEvent.description}</p>
+          <div>
+            <label className="text-neutral-500 text-sm block">Description</label>
+            <p className="text-neutral-300">{selectedEvent.description}</p>
+          </div>
+
+          <div className="flex justify-end pt-2">
+            <a 
+              href={createGoogleCalendarLink(selectedEvent)} 
+              target="_blank" 
+              className="flex items-center gap-1 border border-neutral-700 bg-neutral-950/30 hover:bg-neutral-800 px-3 py-1 rounded-lg transition-all"
+            >
+              <span className="text-blue-400 font-bold text-lg leading-none">+</span>
+              <div className="flex items-center tracking-tight font-medium">
+                <span className="text-blue-500">G</span>
+                <span className="text-red-500">o</span>
+                <span className="text-yellow-500">o</span>
+                <span className="text-blue-500">g</span>
+                <span className="text-green-500">l</span>
+                <span className="text-red-500">e</span>
+                <span className="text-neutral-300">Calendar</span>
               </div>
+              </a>
+          </div>
             
           </div>
         )}

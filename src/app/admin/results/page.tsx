@@ -188,7 +188,6 @@ export default function ResultsPage() {
 
           <BtnSaveAndCancel 
             onCancel={() => setIsModalOpen(false)} 
-            saveLabel={form.id ? "Update Score" : "Save Result"} 
           />
         </form>
       </PopUpEvent>

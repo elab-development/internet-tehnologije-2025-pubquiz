@@ -1,3 +1,46 @@
+/**
+ * @swagger
+ * /api/auth/login:
+ *  post:
+ *    summary: Autentifikacija korisnika
+ *    description: Proverava kredencijale korisnika, izdaje JWT token i postavlja ga u HTTP-only kolačić.
+ *    tags:
+ *      - Auth
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - email
+ *              - password
+ *            properties:
+ *              email:
+ *                type: string
+ *              password:
+ *                 type: string
+ *    responses:
+ *      200:
+ *        description: Uspešna prijava. Vraća podatke o korisniku i postavlja set-cookie zaglavlje.
+ *        content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              user:
+ *                type: object
+ *                properties:
+ *                  id:
+ *                    type: string
+ *                  email:
+ *                    type: string
+ *                  role:
+ *                    type: string
+ *      401:
+ *        description: Neispravni kredencijali ili korisnik ne postoji.
+ */
+
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { AUTH_COOKIE, cookieOpts, signAuthToken } from "@/lib/auth";

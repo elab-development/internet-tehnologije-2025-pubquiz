@@ -1,3 +1,22 @@
+/**
+ * @swagger
+ * /api/auth/logout:
+ *    post:
+ *      summary: Odjava korisnika
+ *      description: Briše autentifikacioni kolačić postavljanjem njegovog trajanja na nulu, čime se završava sesija korisnika.
+ *      tags:
+ *          - Auth
+ *      responses:
+ *          200:
+ *              description: Uspešna odjava. Kolačić je obrisan iz pretraživača.
+ *              content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          ok:
+ *                              type: boolean
+ */
 import { AUTH_COOKIE } from "@/lib/auth";
 import { NextResponse } from "next/server";
 

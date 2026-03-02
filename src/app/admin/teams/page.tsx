@@ -144,8 +144,7 @@ export default function TeamsPage() {
           </div>
 
           <BtnSaveAndCancel 
-            onCancel={() => setIsModalOpen(false)} 
-            saveLabel="Update Team" 
+            onCancel={() => setIsModalOpen(false)}
           />
         </form>
       </PopUpEvent>

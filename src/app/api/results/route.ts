@@ -41,8 +41,9 @@
 
 import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { results, seasons } from "@/db/schema";
-import { desc, asc } from "drizzle-orm";
+import { results } from "@/db/schema";
+import { desc } from "drizzle-orm";
+
 
 export async function GET(request: Request) {
   try {

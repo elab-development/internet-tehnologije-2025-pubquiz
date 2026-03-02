@@ -150,7 +150,6 @@ export default function SeasonsPage() {
           </div>
           <BtnSaveAndCancel 
             onCancel={() => setIsModalOpen(false)} 
-            saveLabel={form.id ? "Update" : "Save"} 
           />
         </form>
       </PopUpEvent>

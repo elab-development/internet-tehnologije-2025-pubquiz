@@ -1,3 +1,56 @@
+/**
+ * @swagger
+ * /api/auth/register:
+ *  post:
+ *    summary: Registracija novog tima
+ *    description: Kreira korisnički nalog (USER) i povezani profil tima (TEAM) unutar jedne baze podataka koristeći transakciju.
+ *    tags:
+ *      - Auth
+ *    requestBody:
+ *      required: true
+ *      content:
+ *      application/json:
+ *        schema:
+ *          type: object
+ *        required:
+ *          - teamName
+ *          - email
+ *          - password
+ *          properties:
+ *            teamName:
+ *              type: string
+ *            email:
+ *              type: string
+ *            password:
+ *              type: string
+ *    responses:
+ *      200:
+ *        description: Uspešna registracija. Korisnik je ulogovan i postavljen je AUTH kolačić.
+ *        content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              user:
+ *                type: object
+ *                properties:
+ *                  id:
+ *                    type: string
+ *                  email:
+ *                     type: string
+ *                   role:
+ *                     type: string
+ *                   team:
+ *                     type: object
+ *                     properties:
+ *                      id:
+ *                        type: integer
+ *                      teamName:
+ *                        type: string
+ *      400:
+ *        description: Nevalidni podaci ili email već postoji u bazi.
+ */
+
 import { db } from "@/db";
 import { users, teams } from "@/db/schema";
 import { AUTH_COOKIE, cookieOpts, signAuthToken } from "@/lib/auth";

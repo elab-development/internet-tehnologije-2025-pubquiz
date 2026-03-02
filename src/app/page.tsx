@@ -3,8 +3,8 @@ import { events, results, seasons } from "@/db/schema";
 import { desc, eq, inArray } from "drizzle-orm";
 import Scoreboard from "@/../components/Scoreboard";
 import SeasonSelector from "@/../components/SeasonSelector"; 
-
-
+import TriviaCard from "../../components/TriviaCard";
+import { calculateScoreboard } from "@/lib/utils";
 
 export default async function HomePage(props: {  searchParams?: Promise<{ seasonId?: string }>;}) {
   
@@ -55,19 +55,10 @@ export default async function HomePage(props: {  searchParams?: Promise<{ season
       with: { team: true }
     });
 
-    const scoreMap = new Map<string, number>();
-
-    allResults.forEach((r) => {
-      const teamName = r.team.teamName;
-      const current = scoreMap.get(teamName) || 0;
-      scoreMap.set(teamName, current + r.points);
-    });
-
-    sortedScoreboard = Array.from(scoreMap.entries())
-      .map(([team, points]) => ({ team, points }))
-      .sort((a, b) => b.points - a.points);
+    sortedScoreboard = calculateScoreboard(allResults);
   }
 
+  
   return (
     <main className="text-white p-6 md:p-12 ">
       
@@ -77,20 +68,6 @@ export default async function HomePage(props: {  searchParams?: Promise<{ season
         </h1>
       </div>
 
-<<<<<<< Updated upstream
-      <div className="max-w-2xl mx-auto bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden">
-        
-        <div className="p-6 flex justify-between items-center bg-neutral-800/50">
-          <div>
-            <SeasonSelector 
-              seasons={allSeasons} 
-              currentSeasonId={displaySeason.id} 
-            />
-          </div>
-
-          <div className="bg-neutral-950 px-3 py-1 rounded-full text-xs text-neutral-400 border border-neutral-800">
-            {sortedScoreboard.length} TEAMS
-=======
       <div className="max-w-2xl mx-auto">
         <div className="bg-neutral-900/20 border border-neutral-800 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
           
@@ -119,19 +96,13 @@ export default async function HomePage(props: {  searchParams?: Promise<{ season
                 <Scoreboard data={sortedScoreboard} />
               </div>
             )}
->>>>>>> Stashed changes
           </div>
         </div>
 
-        
-        {sortedScoreboard.length === 0 ? (
-          <div className="p-10 text-center text-neutral-400">
-            No results for the season <span className="text-yellow-500 font-bold">{displaySeason.name}</span>.
-          </div>
-        ) : (
-          <Scoreboard data={sortedScoreboard} />
-        )}
-      </div>
+        <div className="max-w-2xl mx-auto mt-8">
+          <TriviaCard />
+        </div>
+       </div>
 
     </main>
   );

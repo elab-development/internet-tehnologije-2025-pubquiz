@@ -173,8 +173,7 @@ export default function EventsPage() {
           </div>
           
           <BtnSaveAndCancel 
-            onCancel={() => setIsModalOpen(false)} 
-            saveLabel={form.id ? "Update" : "Schedule"} 
+            onCancel={() => setIsModalOpen(false)}  
           />
         </form>
       </PopUpEvent>
