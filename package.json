@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint",
     "db:migrate": "npx drizzle-kit generate && npx drizzle-kit push",
-    "db:seed": "tsx src/db/seed.ts"
+    "db:seed": "tsx src/db/seed.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@remixicon/react": "^4.8.0",
@@ -21,13 +22,17 @@
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^0.563.0",
     "next": "^16.1.6",
+    "next-swagger-doc": "^0.4.1",
     "pg": "^8.17.2",
     "postgres": "^3.4.8",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "recharts": "^3.7.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-react": "^5.32.0",
     "tailwind-merge": "^3.4.0",
-    "tsx": "^4.21.0"
+    "tsx": "^4.21.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -38,11 +43,16 @@
     "@types/pg": "^8.16.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-react": "^5.18.0",
+    "@vitejs/plugin-react": "^5.1.4",
     "dotenv": "^17.2.3",
     "drizzle-kit": "^0.18.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.4",
+    "jsdom": "^28.1.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.18"
   }
 }

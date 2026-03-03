@@ -1,3 +1,43 @@
+/**
+ * @swagger
+ * /api/seasons:
+ *  get:
+ *    description: Vraca listu svih sezona sortiranu po datumu pocetka
+ *    responses:
+ *      200:
+ *        description: Uspesno povucena lista sezona
+ *      500:
+ *        description: Serverska greska
+ *  post:
+ *    description: Kreiranje nove sezone (Samo za Admina)
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - name
+ *              - startDate
+ *              - endDate
+ *            properties:
+ *              name:
+ *                type: string
+ *              startDate:
+ *                type: string
+ *                format: date
+ *              endDate:
+ *                type: string
+ *                format: date
+ *    responses:
+ *      200:
+ *        description: Sezona uspesno kreirana
+ *      401:
+ *        description: Niste prijavljeni ili niste admin
+ *      500:
+ *        description: Greska pri kreiranju
+ */
+
 import { NextResponse } from "next/server";
 import { db } from "@/db"; 
 import { seasons } from "@/db/schema";

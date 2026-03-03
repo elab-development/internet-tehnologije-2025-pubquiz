@@ -13,7 +13,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white p-8">
+    <div className="bg-neutral-950 text-white p-8">
       <header className="max-w-5xl mx-auto text-center mb-16">
         <h1 className="text-6xl font-black text-yellow-500 uppercase tracking-tighter">
           Admin <span className="text-white">Panel</span>

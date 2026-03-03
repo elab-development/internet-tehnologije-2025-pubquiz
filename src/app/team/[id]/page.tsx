@@ -1,16 +1,32 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Star, Edit2 } from "lucide-react";
 import PopUpEvent from "@/../components/PopUpEvent";
 import ShowAllButton from "@/../components/ShowAllButton";
 import TeamChart from "@/../components/TeamChart";
 import BtnSaveAndCancel from "@/../components/BtnSaveAndCancel";
 
-export default function TeamProfilePage({ params }: { params: { id: string } }) {
-  const teamId = params.id;
+interface TeamResult {
+  id: string;
+  points: number;
+  event: {
+    title: string;
+    dateTime: string;
+  };
+}
 
-  const [profile, setProfile] = useState<any>(null);
+interface TeamProfile {
+  teamName: string;
+  captainName: string;
+  members: string;
+  results: TeamResult[];
+}
+
+export default function TeamProfilePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id: teamId } = use(params);
+
+  const [profile, setProfile] = useState<TeamProfile | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
 
@@ -56,7 +72,7 @@ export default function TeamProfilePage({ params }: { params: { id: string } }) 
         fetchProfile();
       }
     } catch (err) {
-      alert("Greška pri čuvanju");
+      alert("Greska pri cuvanju");
     }
   };
 
@@ -68,7 +84,7 @@ export default function TeamProfilePage({ params }: { params: { id: string } }) 
   }));
 
   return (
-    <div className="bg-neutral-950 text-neutral-200 p-4 md:p-8 min-h-screen">
+    <div className="bg-neutral-950 text-neutral-200 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         
         <section className="bg-neutral-900/40 border border-neutral-800 rounded-2xl p-6 relative mb-8 shadow-lg">

@@ -18,8 +18,8 @@ interface AdminTableProps {
 
 export default function AdminTable({ columns, data, onEdit, onDelete, isActionDisabled }: AdminTableProps) {
   return (
-    <div className="border border-neutral-800 rounded-lg overflow-hidden bg-neutral-900/20">
-      <table className="w-full text-left">
+    <div className="border border-neutral-800 rounded-lg overflow-x-auto bg-neutral-900/20">
+      <table className="w-full text-left min-w-[300px]">
         <thead className="bg-neutral-900/50 text-xs border-b border-neutral-800 uppercase text-neutral-500 tracking-widest">
           <tr>
             {columns.map((col, index) => (
@@ -40,21 +40,23 @@ export default function AdminTable({ columns, data, onEdit, onDelete, isActionDi
                       {col.render ? col.render(item) : item[col.key]}
                     </td>
                   ))}
-                  <td className="p-4 flex justify-end gap-3">
-                    <button 
-                      onClick={() => !disabled && onEdit(item)} 
-                      className={`${disabled ? 'text-neutral-600 cursor-not-allowed' : 'text-blue-400 hover:text-blue-200'} transition-colors`}
-                      title={disabled ? "Finished" : "Edit"}
-                    >
-                      <Edit2 size={16} />
-                    </button>
-                    <button 
-                      onClick={() => !disabled && onDelete(item.id)} 
-                      className={`${disabled ? 'text-neutral-600 cursor-not-allowed' : 'text-red-500 hover:text-red-300'} transition-colors`}
-                      title={disabled ? "Finished" : "Delete"}
-                    >
-                      <Trash2 size={16} />
-                    </button>
+                  <td className="p-4">
+                    <div className="flex justify-end gap-4">
+                      <button 
+                        onClick={() => !disabled && onEdit(item)} 
+                        className={`${disabled ? 'text-neutral-600 cursor-not-allowed' : 'text-blue-400 hover:text-blue-200'} transition-colors`}
+                        title={disabled ? "Finished" : "Edit"}
+                      >
+                        <Edit2 size={16} />
+                      </button>
+                      <button 
+                        onClick={() => !disabled && onDelete(item.id)} 
+                        className={`${disabled ? 'text-neutral-600 cursor-not-allowed' : 'text-red-500 hover:text-red-300'} transition-colors`}
+                        title={disabled ? "Finished" : "Delete"}
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );

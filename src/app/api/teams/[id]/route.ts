@@ -1,3 +1,57 @@
+/**
+ * @swagger
+ * /api/teams/{id}:
+ *  get:
+ *    description: Vraca detalje o konkretnom timu
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      200:
+ *        description: Nadjen tim
+ *      404:
+ *        description: Tim nije pronadjen
+ *  patch:
+ *    description: Izmena tima
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              teamName:
+ *                type: string
+ *              captainName:
+ *                type: string
+ *              members:
+ *                type: array
+ *                items:
+ *                  type: string
+ *    responses:
+ *      200:
+ *        description: Azurirano
+ *  delete:
+ *    description: Brisanje tima
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      200:
+ *        description: Obrisano
+ */
+
 import { NextResponse } from "next/server";
 import { getAuthUser, isAdmin } from "@/lib/auth"; 
 import { db } from "@/db";

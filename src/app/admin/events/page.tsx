@@ -118,7 +118,7 @@ export default function EventsPage() {
   const inputClass = "w-full bg-neutral-950 border border-neutral-800 p-3 rounded text-white mb-4 outline-none focus:border-yellow-500 transition-colors";
 
   return (
-    <div className="p-8 bg-neutral-950 text-white min-h-screen">
+    <div className="p-8 bg-neutral-950 text-white">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-end mb-6">
           <div>
@@ -173,8 +173,7 @@ export default function EventsPage() {
           </div>
           
           <BtnSaveAndCancel 
-            onCancel={() => setIsModalOpen(false)} 
-            saveLabel={form.id ? "Update" : "Schedule"} 
+            onCancel={() => setIsModalOpen(false)}  
           />
         </form>
       </PopUpEvent>

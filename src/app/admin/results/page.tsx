@@ -79,7 +79,7 @@ export default function ResultsPage() {
 
   const columns = [
     { 
-      header: "Quiz / Event", 
+      header: "Quiz", 
       key: "eventId", 
       render: (res: any) => (
         <span className="font-bold text-neutral-300">
@@ -101,7 +101,7 @@ export default function ResultsPage() {
       key: "points",
       render: (res: any) => (
         <div className="text-center">
-          <span className="font-black text-xl text-neutral-100 bg-neutral-800 px-3 py-1 rounded">
+          <span className="font-black text-xl text-neutral-100">
             {res.points}
           </span>
         </div>
@@ -188,7 +188,6 @@ export default function ResultsPage() {
 
           <BtnSaveAndCancel 
             onCancel={() => setIsModalOpen(false)} 
-            saveLabel={form.id ? "Update Score" : "Save Result"} 
           />
         </form>
       </PopUpEvent>
