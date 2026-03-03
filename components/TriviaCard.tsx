@@ -6,24 +6,37 @@ export default function TriviaCard() {
   const [loading, setLoading] = useState(false);
   const [revealed, setRevealed] = useState<number | null>(null);
 
-  const fetchTrivia = async () => {
-    setLoading(true);
-    setRevealed(null);
-    try {
-      const res = await fetch('https://opentdb.com/api.php?amount=3&category=9&type=multiple');
-      const data = await res.json();
+ const fetchTrivia = async () => {
+  if (loading) return; // Sprečava duple klikove dok traje ucitavanje
+  setLoading(true);
+  setRevealed(null);
+
+  try {
+    const res = await fetch('https://opentdb.com/api.php?amount=3&category=9&type=multiple');
+    //200-299
+    if (!res.ok) {
+      throw new Error(`Greska servera: ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    if (data?.results && Array.isArray(data.results)) {
       const formatted = data.results.map((q: any) => ({
         question: q.question,
         correct: q.correct_answer,
         answers: [...q.incorrect_answers, q.correct_answer].sort(() => Math.random() - 0.5)
       }));
       setQuestions(formatted);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
+    } else {
+      setQuestions([]); // API je vratio 200 OK, ali prazne podatke ili 429 u JSON-u
     }
-  };
+  } catch (e) {
+    console.error("Mrezna greška ili timeout:", e);
+    setQuestions([]); // Sprecava krah UI-ja
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => { fetchTrivia(); }, []);
 

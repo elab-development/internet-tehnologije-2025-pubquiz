@@ -91,7 +91,7 @@ export default function SeasonsPage() {
   const displayedSeasons = (shouldShowButton && !showAll) ? seasons.slice(0, LIMIT) : seasons;
 
   return (
-    <div className="p-8 bg-neutral-950 text-white min-h-screen">
+    <div className="p-8 bg-neutral-950 text-white">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-end mb-6">
           <div>

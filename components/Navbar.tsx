@@ -33,7 +33,7 @@ export default function Navbar() {
     return (
         <nav className="bg-neutral-950 text-white border-b relative">
             <div className="px-4 py-2 flex justify-between items-center max-w mx-auto">
-                <div className="hidden md:flex items-center gap-6">
+                <div className="md:flex items-center gap-6">
                 {/* Logo */}
                 <Link href="/" className="font-bold text-xl hover:text-2xl text-yellow-500 -rotate-3">PubQuiz</Link>
 
