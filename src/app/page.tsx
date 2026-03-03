@@ -52,18 +52,21 @@ export default async function HomePage(props: {  searchParams?: Promise<{ season
     <main className="bg-neutral-950 text-white px-4 py-8 md:px-8 md:py-16 selection:bg-yellow-500/30">
 
       <div className="max-w-2xl mx-auto">
-        <div className="bg-neutral-900/20 border border-neutral-800 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
+        <h1 className="text-center text-6xl font-black italic tracking-wider text-white uppercase mb-4">
+          <span className="text-yellow-500">PubQuiz</span> League
+        </h1>
+        <div className="bg-neutral-950/30 border border-neutral-800 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
           
-          <div className=" p-4 flex flex-col flex-start gap-6 border-b border-neutral-800 bg-neutral-900/40 md:flex-row md:justify-between md:items-center">
-     
-            <div className="w-full sm:w-auto flex justify-start md:justify-start">
+          <div className="flex flex-col flex-start gap-2 border-b border-neutral-800 md:flex-row md:justify-between md:items-center">
+            
+            <div className="w-full mx-6 my-2 sm:w-auto flex justify-start md:justify-start">
               <SeasonSelector 
                 seasons={allSeasons} 
                 currentSeasonId={displaySeason.id} 
               />
             </div>
 
-            <div className="flex items-center justify-start py-2">
+            <div className="flex items-center justify-start mx-6 my-2">
               <p className="text-xs text-neutral-500 font-bold uppercase tracking-widest mb-1">Teams: {sortedScoreboard.length}</p>
             </div>
 
