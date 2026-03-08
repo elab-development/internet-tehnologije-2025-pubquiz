@@ -6,6 +6,6 @@ export default ({
   schema: './src/db/schema.ts',
   dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DATABASE_URL!,
+    url: "postgresql://user:password@localhost:5433/pubquiz",
   },
 });

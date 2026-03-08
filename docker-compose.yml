@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: pubquiz
+    ports:
+      - "5433:5432"
+
+  app:
+    build: .
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/pubquiz
+      JWT_SECRET: lukamarija
+      NODE_ENV: production
+    depends_on:
+      - db
