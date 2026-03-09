@@ -4,34 +4,34 @@ Ovo je web aplikacija za organizaciju pub kvizova, vođenje evidencije o timovim
 
 ## Ključne funkcionalnosti
 
-**Scoreboard:** Automatsko računanje ukupnih poena timova kroz sezone sa preciznim rangiranjem.
-**Interaktivni kalendar:** Pregled svih kvizova po mesecima sa detaljnim pop-up informacijama o lokaciji i vremenu.
-**My Profile:** Interaktivna statistika tima, vizuelni prikaz progresa kroz *Line Chart* i jednostavno upravljanje podacima.
-**Admin Panel:** Kompletne CRUD operacije za upravljanje sezonama, kvizovima i rezultatima.
-**Eksterna Integracija:**
-    **Open Trivia DB:** Dinamičko povlačenje nasumičnih pitanja za pripremu kvizova.
-    **Google Calendar:** Automatsko generisanje linkova za dodavanje događaja u lični kalendar.
+- **Scoreboard:** Automatsko računanje ukupnih poena timova kroz sezone sa preciznim rangiranjem.
+- **Interaktivni kalendar:** Pregled svih kvizova po mesecima sa detaljnim pop-up informacijama o lokaciji i vremenu.
+- **My Profile:** Interaktivna statistika tima, vizuelni prikaz progresa kroz *Line Chart* i jednostavno upravljanje podacima.
+- **Admin Panel:** Kompletne CRUD operacije za upravljanje sezonama, kvizovima i rezultatima.
+- **Eksterna Integracija:**
+     - **Open Trivia DB:** Dinamičko povlačenje nasumičnih pitanja za pripremu kvizova.
+     - **Google Calendar:** Automatsko generisanje linkova za dodavanje događaja u lični kalendar.
 
 ---
 ## Tehnološki stack:
 
-**Frontend & Backend:** Next.js 16 (App Router)
-**Jezik:** TypeScript
-**Baza podataka:** PostgreSQL
-**ORM:** Drizzle ORM
-**Autentifikacija:** Bcryptjs (Secure Hashing)
-**Styling:** Tailwind CSS
-**Dokumentacija:** Swagger (OpenAPI 3.0)
-**Kontejnerizacija:** Docker & Docker Compose
-**Testiranje:** Vite
+- **Frontend & Backend:** Next.js 16 (App Router)
+- **Jezik:** TypeScript
+- **Baza podataka:** PostgreSQL
+- **ORM:** Drizzle ORM
+- **Autentifikacija:** Bcryptjs (Secure Hashing)
+- **Styling:** Tailwind CSS
+- **Dokumentacija:** Swagger (OpenAPI 3.0)
+- **Kontejnerizacija:** Docker & Docker Compose
+- **Testiranje:** Vitest
 
 ---
 ## Implementirane mere bezbednosti
 
-**Prevencija SQL Injection-a:** Aplikacija koristi Drizzle ORM koji interno implementira parametrizaciju svih SQL upita. Ovim se razdvaja logika koda od korisničkih podataka, čime se u potpunosti eliminiše rizik od SQL Injection napada
-**XSS zaštita:** Next.js automatski vrši "output escaping" svih podataka pri renderovanju, sprečavajući injekciju zlonamernih skripti u klijentski browser.
-**IDOR zaštita:** Implementirana je autorizacija na nivou resursa. Server ne dozvoljava manipulaciju podacima samo na osnovu prosleđenog ID-ja, već vrši proveru vlasništva nad resursom pre svake baze podataka operacije (Update/Delete).
-**Integritet podataka:** Implementirano softversko zaključavanje rezultata nakon 7 dana radi sprečavanja neovlašćenih naknadnih izmena.
+- **Prevencija SQL Injection-a:** Aplikacija koristi Drizzle ORM koji interno implementira parametrizaciju svih SQL upita. Ovim se razdvaja logika koda od korisničkih podataka, čime se u potpunosti eliminiše rizik od SQL Injection napada.
+- **XSS zaštita:** Next.js automatski vrši "output escaping" svih podataka pri renderovanju, sprečavajući injekciju zlonamernih skripti u klijentski browser.
+- **IDOR zaštita:** Implementirana je autorizacija na nivou resursa. Server ne dozvoljava manipulaciju podacima samo na osnovu prosleđenog ID-ja, već vrši proveru vlasništva nad resursom pre svake baze podataka operacije (Update/Delete).
+- **Integritet podataka:** Implementirano softversko zaključavanje rezultata nakon 7 dana radi sprečavanja neovlašćenih naknadnih izmena.
 
 ---
 
@@ -72,7 +72,8 @@ npm run dev
 ```
 ---
 ## Pokretanje putem Dockera
-
+### Preduslovi
+- [Docker](https://www.docker.com) instaliran na sistemu
 ### Pokretanje aplikacije
 
 1. Build i pokretanje kontejnera:
@@ -107,6 +108,22 @@ docker-compose down -v
 |--------|------|
 | Aplikacija | 3000 |
 | PostgreSQL | 5433 |
+
+---
+
+## Deploy
+
+Aplikacija je deployovana na **Vercel** platformi.
+
+### Automatski deploy
+Svaki push na `master` granu automatski trigeruje novi deploy na Vercel-u putem GitHub integracije.
+
+### CI/CD
+Projekat koristi GitHub Actions (`.github/workflows/main.yml`) za:
+- **Pokretanje Vitest testova** — na svaki push i pull request na `master`
+- **Build Docker image-a** — provera da se aplikacija uspešno builduje
+
+> Deploy na Vercel se odvija nezavisno, direktno kroz Vercel-GitHub integraciju.
 
 ---
 ## API dokumentacija
