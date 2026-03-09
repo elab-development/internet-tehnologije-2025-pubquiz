@@ -60,11 +60,11 @@ Podesite .env fajl i dodajte vašu DATABASE_URL.
 
 3. Sinhronizacija šeme:
 ```bash
-npx drizzle-kit push
+npm run db:migrate
 ```
 4. Popunjavanje baze test podacima:
 ```bash
-npx tsx src/db/seed.ts
+npm run db:seed
 ```
 5. Pokretanje razvojnog servera:
 ```bash
