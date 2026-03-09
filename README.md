@@ -42,27 +42,34 @@ Za osiguranje stabilnosti i kvaliteta koda koristi se **Vitest**:
 * **Integracioni testovi:** Provera dostupnosti API ruta i ispravnosti odgovora servera.
 
 Pokretanje testova:
-`npm test`
+```bash
+npm test
+```
 
 ---
 ## Uputstvo za instalaciju i pokretanje
 Da biste pokrenuli projekat lokalno, pratite ove korake:
 
 1. Instalacija zavisnosti:
-`npm install`
+```bash
+npm install
+```
 
 2. Podešavanje baze:
 Podesite .env fajl i dodajte vašu DATABASE_URL.
 
 3. Sinhronizacija šeme:
-`npx drizzle-kit push`
-
+```bash
+npx drizzle-kit push
+```
 4. Popunjavanje baze test podacima:
-`npx tsx src/db/seed.ts`
-
+```bash
+npx tsx src/db/seed.ts
+```
 5. Pokretanje razvojnog servera:
-`npm run dev` 
-
+```bash
+npm run dev
+```
 ---
 ## Pokretanje putem Dockera
 
