@@ -15,13 +15,15 @@ Ovo je web aplikacija za organizaciju pub kvizova, vođenje evidencije o timovim
 ---
 ## Tehnološki stack:
 
-Frontend i Backend: Next.js 16 (App Router)
-Baza podataka: PostgreSQL
-ORM: Drizzle ORM
-Autentifikacija: Bcryptjs (Secure Hashing)
-Styling: Tailwind CSS
-Dokumentacija: Swagger (OpenAPI 3.0)
-Kontejnerizacija: Docker
+**Frontend & Backend:** Next.js 16 (App Router)
+**Jezik:** TypeScript
+**Baza podataka:** PostgreSQL
+**ORM:** Drizzle ORM
+**Autentifikacija:** Bcryptjs (Secure Hashing)
+**Styling:** Tailwind CSS
+**Dokumentacija:** Swagger (OpenAPI 3.0)
+**Kontejnerizacija:** Docker & Docker Compose
+**Testiranje:** Vite
 
 ---
 ## Implementirane mere bezbednosti
@@ -59,9 +61,47 @@ Podesite .env fajl i dodajte vašu DATABASE_URL.
 `npx tsx src/db/seed.ts`
 
 5. Pokretanje razvojnog servera:
-`npm run` 
-
+`npm run dev` 
 
 ---
-**API dokumentacija** je dostupna na ruti /api-docs nakon što pokrenete aplikaciju.
+## Pokretanje putem Dockera
+
+### Pokretanje aplikacije
+
+1. Build i pokretanje kontejnera:
+```bash
+docker-compose up --build -d
+```
+
+2. Pokretanje migracija baze podataka:
+```bash
+docker exec pubquiz-app npm run db:migrate
+```
+
+3. Popunjavanje baze test podacima:
+```bash
+docker exec pubquiz-app npm run db:seed
+```
+
+Aplikacija je dostupna na **http://localhost:3000**
+
+### Zaustavljanje
+```bash
+docker-compose down
+```
+
+Za brisanje i podataka iz baze:
+```bash
+docker-compose down -v
+```
+
+### Portovi
+| Servis | Port |
+|--------|------|
+| Aplikacija | 3000 |
+| PostgreSQL | 5433 |
+
+---
+## API dokumentacija
+Nakon pokretanja aplikacije, kompletna Swagger dokumentacija sa svim dostupnim endpoint-ima nalazi se na ruti /api-docs.
 

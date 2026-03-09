@@ -5,14 +5,21 @@ export default function TriviaCard() {
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [revealed, setRevealed] = useState<number | null>(null);
+  const [rateLimited, setRateLimited] = useState(false);
 
  const fetchTrivia = async () => {
   if (loading) return; // Sprečava duple klikove dok traje ucitavanje
   setLoading(true);
   setRevealed(null);
+  setRateLimited(false);
 
   try {
     const res = await fetch('https://opentdb.com/api.php?amount=3&category=9&type=multiple');
+    
+    if (res.status === 429) {
+      setRateLimited(true);
+      return;
+    }
     //200-299
     if (!res.ok) {
       throw new Error(`Greska servera: ${res.status}`);
@@ -56,6 +63,11 @@ export default function TriviaCard() {
       </div>
 
       <div className="space-y-6">
+        {rateLimited && (
+          <p className="text-sm text-neutral-500 text-center py-4">
+            Please try again in a few seconds.
+          </p>
+        )}
         {questions.map((q, idx) => (
           <div key={idx} className="border-b border-neutral-800 pb-4 last:border-0">
             <p className="text-sm text-white mb-3" dangerouslySetInnerHTML={{ __html: q.question }} />

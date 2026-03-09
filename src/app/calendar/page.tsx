@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { events } from "@/db/schema";
 import EventCalendar from "@/../components/EventCalendar";
 
+export const dynamic = 'force-dynamic';
 
 export default async function CalendarPage() {
     

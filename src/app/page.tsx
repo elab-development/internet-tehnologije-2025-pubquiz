@@ -7,6 +7,8 @@ import SeasonSelector from "@/../components/SeasonSelector";
 import TriviaCard from "../../components/TriviaCard";
 import { calculateScoreboard } from "@/lib/utils";
 
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage(props: {  searchParams?: Promise<{ seasonId?: string }>;}) {
 
   const params = await props.searchParams;

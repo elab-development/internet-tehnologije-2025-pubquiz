@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { AUTH_COOKIE } from '@/lib/auth';
 import * as jwt from "jsonwebtoken";
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const token = request.cookies.get(AUTH_COOKIE)?.value;
   const { pathname } = request.nextUrl;
 
@@ -26,11 +26,17 @@ export function proxy(request: NextRequest) {
     }
   }
 
+  if (pathname.startsWith('/team')) {
+    if (!token) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
   //  pokreće isključivo za rute koje počinju sa /admin/
   //  :path* bilo šta što ide posle toga
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/team/:path*'],
 };

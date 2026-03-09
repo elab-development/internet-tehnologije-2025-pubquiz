@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Menu, X, User } from "lucide-react";
 import { useAuth } from "../components/AuthProvider"; 
-
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +15,8 @@ export default function Navbar() {
     const { status, user, logout } = useAuth();
     const isLoggedIn = status === "authenticated";
 
-
+    const router = useRouter();
+    
     const profileHref = user?.role === "ADMIN" ? "/admin" : `/team/${user?.id}`;
     const isAdmin = status === "authenticated" && user?.role === "ADMIN";
    
@@ -28,6 +29,8 @@ export default function Navbar() {
         await logout();
         setIsProfilOpen(false);
         setIsOpen(false);
+        router.refresh();
+        router.push('/login');
     };
 
     return (
